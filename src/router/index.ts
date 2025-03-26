@@ -1,26 +1,38 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import LandingPage from '../views/LandingPage.vue'
-import RegistrationPage from '@/views/RegistrationPage.vue'
-import LoginPage from '@/views/LoginPage.vue'
+import LandingPage from '../views/preLogIn/LandingPage.vue'
+import RegistrationPage from '@/views/preLogIn/RegistrationPage.vue'
+import LoginPage from '@/views/preLogIn/LoginPage.vue'
+import NotFoundPage from '../views/generic/NotFoundPage.vue'
+import HomePage from '../views/postLogin/HomePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/landingPage',
+      path: '/',
       name: 'landingPage',
       component: LandingPage,
     },
     {
-      path: '/loginPage',
+      path: '/login',
       name: 'loginPage',
       component: LoginPage,
     },
     {
-      path: '/registrationPage',
+      path: '/register',
       name: 'registrationPage',
       component: RegistrationPage,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: NotFoundPage,
+    },
+    {
+      path: '/home',
+      name: 'HomePage',
+      component: HomePage,
     },
   ],
 })
