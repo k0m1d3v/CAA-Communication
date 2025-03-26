@@ -18,6 +18,19 @@
         provide seamless tools and resources that empower individuals and teams to connect, share,
         and grow together in a meaningful way.
       </p>
+      <!-- Embedded YouTube Video -->
+      <div class="mt-8 flex justify-center">
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/rv0txLzS2IA"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        >
+        </iframe>
+      </div>
     </section>
 
     <!-- How It Works Section -->

@@ -1,4 +1,27 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { auth } from '../../firebaseConfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
+const email = ref('')
+const password = ref('')
+const errorMessage = ref('')
+
+const login = async () => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+    console.log('User logged in successfully:', userCredential.user)
+    window.location.href = '/home' // Redirect to home page
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      errorMessage.value = error.message
+      console.error('Login error:', error)
+    } else {
+      console.error('Unexpected error:', error)
+    }
+  }
+}
+</script>
 
 <template>
   <main class="flex items-center justify-center min-h-screen" style="background-color: #fcffa1">
@@ -6,13 +29,14 @@
       <h1 class="text-3xl font-bold text-center mb-6" style="color: #7da7d9">
         Login to CAA Communication
       </h1>
-      <form class="space-y-6">
+      <form @submit.prevent="login" class="space-y-6">
         <!-- Email Input -->
         <div>
           <label for="email" class="block text-sm font-medium" style="color: #7da7d9"
             >Email Address</label
           >
           <input
+            v-model="email"
             type="email"
             id="email"
             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#77DD77]"
@@ -26,12 +50,16 @@
             >Password</label
           >
           <input
+            v-model="password"
             type="password"
             id="password"
             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF9AA2]"
             placeholder="Enter your password"
           />
         </div>
+
+        <!-- Error Message -->
+        <p v-if="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
 
         <!-- Submit Button -->
         <div>
