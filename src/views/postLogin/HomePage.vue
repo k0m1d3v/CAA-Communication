@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import PageTitle from '@/components/pageTitle.vue'
 import NavigationCard from '@/components/navigationCard.vue'
+import HelpNavigator from '@/components/helpNavigator.vue'
 
 const isLoggedIn = ref(true)
 const router = useRouter()
@@ -33,5 +34,8 @@ const cards = [
       :route="item.route"
       :color="item.color"
     />
+  </div>
+  <div class="">
+    <HelpNavigator />
   </div>
 </template>
