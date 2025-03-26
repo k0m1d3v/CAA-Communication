@@ -1,20 +1,22 @@
 # CAA Communication
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is designed to facilitate communication within the CAA organization, leveraging Vue 3, Vite, and Tailwind CSS for a modern and efficient development experience.
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+We recommend using [VSCode](https://code.visualstudio.com/) with the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension (and disabling Vetur) for the best development experience.
 
 ## Type Support for `.vue` Imports in TS
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+To enable TypeScript support for `.vue` files, we use `vue-tsc` for type checking instead of the default `tsc` CLI. Ensure you have [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) installed in your editor to recognize `.vue` types.
 
-## Customize configuration
+## Customize Configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+For project-specific configurations, refer to the [Vite Configuration Reference](https://vite.dev/config/).
 
 ## Project Setup
+
+Install the necessary dependencies:
 
 ```sh
 npm install
@@ -22,11 +24,15 @@ npm install
 
 ### Compile and Hot-Reload for Development
 
+Start the development server with:
+
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Type-Check, Compile, and Minify for Production
+
+Build the project for production with:
 
 ```sh
 npm run build
@@ -34,6 +40,12 @@ npm run build
 
 ### Lint with [ESLint](https://eslint.org/)
 
+Ensure code quality by running:
+
 ```sh
 npm run lint
 ```
+
+### Styling with [Tailwind CSS](https://tailwindcss.com/)
+
+This project uses Tailwind CSS for styling. For detailed usage and customization, refer to the [Tailwind CSS documentation](https://tailwindcss.com/docs).

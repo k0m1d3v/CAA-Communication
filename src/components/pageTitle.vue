@@ -1,6 +1,6 @@
 <template>
-  <div class="page-title">
-    <h1>{{ title }}</h1>
+  <div class="text-center mt-5">
+    <h1 class="text-6xl font-bold text-black cursor-default">{{ title }}</h1>
   </div>
 </template>
 
@@ -15,16 +15,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.page-title {
-  text-align: center;
-  margin-top: 20px;
-}
-
-h1 {
-  font-size: 4rem;
-  font-weight: bold;
-  color: #000000;
-}
-</style>
