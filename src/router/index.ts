@@ -7,6 +7,7 @@ import LoginPage from '@/views/preLogIn/LoginPage.vue'
 
 // Generic pages
 import NotFoundPage from '../views/generic/NotFoundPage.vue'
+import logoutPage from '../views/generic/logoutTransitioner.vue'
 
 // Post login pages
 import HomePage from '../views/postLogin/HomePage.vue' // Home page
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/giochi',
       name: 'Giochi',
       component: GiochiPage,
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: logoutPage,
     },
   ],
 })

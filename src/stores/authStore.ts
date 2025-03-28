@@ -2,32 +2,30 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { auth } from '../firebaseConfig'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import type { User } from 'firebase/auth' // Use a type-only import for User
+import type { User } from 'firebase/auth'
 
 export const useAuthStore = defineStore('auth', () => {
-  // Explicitly define the type of `user` as `User | null`
   const user = ref<User | null>(null)
-
-  // Computed property to check if the user is authenticated
   const isAuthenticated = computed(() => user.value !== null)
+  const isLoading = ref(true) // Partiamo con isLoading a `true`
 
-  // Initialize the store by setting up the auth state listener
+  const setUser = (firebaseUser: User | null) => {
+    user.value = firebaseUser
+  }
+
+  // Inizializza lo store con lo stato dell'utente
   const initializeStore = () => {
+    isLoading.value = true // Imposta lo stato di caricamento
     onAuthStateChanged(auth, (firebaseUser) => {
-      user.value = firebaseUser
+      setUser(firebaseUser) // Imposta l'utente
+      isLoading.value = false // Disattiva il caricamento
     })
   }
 
-  // Logout function
   const logout = async () => {
-    try {
-      await signOut(auth)
-      user.value = null
-      console.log('User logged out')
-    } catch (error) {
-      console.error('Logout error:', error)
-    }
+    await signOut(auth)
+    setUser(null)
   }
 
-  return { user, isAuthenticated, initializeStore, logout }
+  return { user, isAuthenticated, isLoading, initializeStore, logout }
 })

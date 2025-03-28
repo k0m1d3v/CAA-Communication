@@ -10,16 +10,17 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(() => {
-  // Initialize the auth store
   authStore.initializeStore()
 
-  // Watch for changes in the authentication state
+  // Aspettiamo che `isLoading` diventi `false` prima di controllare `user`
   watch(
-    () => authStore.isAuthenticated,
-    (isAuthenticated) => {
-      console.log('Authentication state:', isAuthenticated)
-      if (!isAuthenticated) {
-        router.push('/login')
+    () => authStore.isLoading,
+    (loading) => {
+      if (!loading) {
+        if (!authStore.user) {
+          console.warn('Nessun utente trovato, reindirizzamento al login...')
+          router.push('/login')
+        }
       }
     },
     { immediate: true },
@@ -47,7 +48,7 @@ const cards = [
       :color="item.color"
     />
   </div>
-  <div class="">
+  <div>
     <HelpNavigator />
   </div>
 </template>

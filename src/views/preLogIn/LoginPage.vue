@@ -2,17 +2,27 @@
 import { ref } from 'vue'
 import { auth } from '../../firebaseConfig'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useAuthStore } from '../../stores/authStore'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
+const isLoading = ref(false)
+
+const authStore = useAuthStore()
+const router = useRouter()
 
 const login = async () => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     console.log('User logged in successfully:', userCredential.user)
-    window.location.href = '/home' // Redirect to home page
-  } catch (error: unknown) {
+
+    // Firebase gestisce lo stato, quindi aspettiamo che `initializeStore` lo aggiorni
+    authStore.initializeStore()
+
+    router.push('/home')
+  } catch (error) {
     if (error instanceof Error) {
       errorMessage.value = error.message
       console.error('Login error:', error)
@@ -30,11 +40,10 @@ const login = async () => {
         Login to CAA Communication
       </h1>
       <form @submit.prevent="login" class="space-y-6">
-        <!-- Email Input -->
         <div>
-          <label for="email" class="block text-sm font-medium" style="color: #7da7d9"
-            >Email Address</label
-          >
+          <label for="email" class="block text-sm font-medium" style="color: #7da7d9">
+            Email Address
+          </label>
           <input
             v-model="email"
             type="email"
@@ -44,11 +53,10 @@ const login = async () => {
           />
         </div>
 
-        <!-- Password Input -->
         <div>
-          <label for="password" class="block text-sm font-medium" style="color: #7da7d9"
-            >Password</label
-          >
+          <label for="password" class="block text-sm font-medium" style="color: #7da7d9">
+            Password
+          </label>
           <input
             v-model="password"
             type="password"
@@ -58,21 +66,19 @@ const login = async () => {
           />
         </div>
 
-        <!-- Error Message -->
         <p v-if="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
 
-        <!-- Submit Button -->
         <div>
           <button
             type="submit"
             class="w-full py-2 px-4 bg-[#7DA7D9] text-white font-bold rounded-lg hover:bg-[#77DD77] transition duration-300"
+            :disabled="isLoading"
           >
-            Login
+            {{ isLoading ? 'Logging in...' : 'Login' }}
           </button>
         </div>
       </form>
 
-      <!-- Additional Links -->
       <p class="text-center text-sm mt-4" style="color: #7da7d9">
         Don't have an account?
         <a href="/register" class="font-bold" style="color: #ff9aa2">Sign up</a>

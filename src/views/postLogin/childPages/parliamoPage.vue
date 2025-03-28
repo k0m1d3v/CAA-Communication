@@ -1,18 +1,30 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
 import PageTitle from '@/components/pageTitle.vue'
 import NavigationCard from '@/components/navigationCard.vue'
 import HelpNavigator from '@/components/helpNavigator.vue'
 import BackHome from '@/components/backHome.vue'
 
-const isLoggedIn = ref(true)
+const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(() => {
-  if (!isLoggedIn.value) {
-    router.push('/login')
-  }
+  authStore.initializeStore()
+
+  watch(
+    () => authStore.isLoading,
+    (loading) => {
+      if (!loading) {
+        if (!authStore.user) {
+          console.warn('Nessun utente trovato, reindirizzamento al login...')
+          router.push('/login')
+        }
+      }
+    },
+    { immediate: true },
+  )
 })
 
 const cards = [
