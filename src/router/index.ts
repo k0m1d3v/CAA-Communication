@@ -14,6 +14,7 @@ import HomePage from '../views/postLogin/HomePage.vue' // Home page
 import ParliamoPage from '../views/postLogin/childPages/parliamoPage.vue'
 import DizionarioPage from '../views/postLogin/childPages/dizionarioPage.vue'
 import GiochiPage from '../views/postLogin/childPages/giochiPage.vue'
+import DictionaryPage from '../views/postLogin/childPages/dictionaryPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +64,11 @@ const router = createRouter({
       name: 'logout',
       component: logoutPage,
     },
+    {
+      path: '/dictionary',
+      name: 'Dictionary',
+      component: DictionaryPage,
+    }
   ],
 })
 
