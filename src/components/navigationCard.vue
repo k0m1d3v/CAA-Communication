@@ -2,19 +2,29 @@
   <div class="flex justify-center w-[30vh]">
     <div class="flex flex-wrap justify-center items-center gap-4">
       <div
-        class="flex flex-col items-center justify-center rounded-3xl cursor-pointer hover:shadow-2xl transition-transform transform hover:scale-105"
-        :style="{ backgroundColor: color, width: cardWidth, height: cardHeight }"
+        class="flex flex-col items-center justify-between cursor-pointer hover:shadow-2xl transition-transform transform hover:scale-105"
+        :style="{ backgroundColor: color, width: cardWidth, height: cardHeight, borderRadius: borderRadius }"
         @click="navigate"
       >
-        <div class="text-center text-3xl font-bold text-black relative -top-18">
+        <div class="text-center text-3xl font-bold text-black mt-4">
           {{ text }}
         </div>
-        <div class="w-full h-px bg-black relative -top-12"></div>
-        <div class="mt-4">
+        <div v-if="showDivider" class="w-full h-px bg-black"></div>
+        <div class="mt-4 flex items-center gap-2">
           <slot name="icon">
             <img :src="resolvedIcon" alt="Navigation Icon" class="w-20 h-20" />
           </slot>
+          <div v-if="resolvedAdditionalIcons.length" class="flex gap-2">
+            <img
+              v-for="(icon, index) in resolvedAdditionalIcons"
+              :key="index"
+              :src="icon"
+              alt="Additional Icon"
+              class="w-20 h-20"
+            />
+          </div>
         </div>
+        <div class="mb-4"></div>
       </div>
     </div>
   </div>
@@ -51,16 +61,42 @@ export default {
       required: false,
       default: '20rem',
     },
+    borderRadius: {
+      type: String,
+      required: false,
+      default: '1.5rem',
+    },
+    additionalIcons: {
+      type: Array,
+      required: false,
+      default: () => [],
+    },
+    showDivider: {
+      type: Boolean,
+      required: false,
+      default: true, // Divider is shown by default
+    },
   },
   computed: {
     resolvedIcon() {
-      return this.icon ? new URL(`../assets/icons/${this.icon}`, import.meta.url).href : ''
+      return this.icon ? new URL(`../assets/icons/${this.icon}`, import.meta.url).href : '';
+    },
+    resolvedAdditionalIcons() {
+      // Ensure valid URLs are resolved for additional icons
+      return this.additionalIcons.map((icon) => {
+        try {
+          return icon ? new URL(`../assets/icons/${icon}`, import.meta.url).href : '';
+        } catch {
+          console.error(`Invalid icon path: ${icon}`);
+          return '';
+        }
+      });
     },
   },
   methods: {
     navigate() {
-      this.$router.push(this.route)
+      this.$router.push(this.route);
     },
   },
-}
+};
 </script>

@@ -28,11 +28,9 @@ onMounted(() => {
 })
 
 const cards = [
-  { text: 'Ascolta', icon: 'parliamoIcon.png', route: '/parliamo', color: '#ffdd57' },
-  { text: 'Racconta', icon: 'dizionarioIcon.png', route: '/parliamo', color: '#57ddff' },
-  { text: 'Ascolta', icon: 'parliamoIcon.png', route: '/parliamo', color: '#ffdd57' },
-  { text: 'Racconta', icon: 'dizionarioIcon.png', route: '/parliamo', color: '#57ddff' },
-]
+  { text: 'Risposte rapide', icon: 'risposta.png', route: '/quick-answers', color: '#ffdd57', cardHeight:'12rem', cardWidth:'20.5rem', borderRadius:'5rem', additionalIcons: ['rapido.png'], showDivider:false },
+  { text: 'Dizionario', icon: 'dizionario.png', route: '/dictionary', color: '#aabbcc', cardHeight:'12rem', cardWidth:'20.5rem', borderRadius:'5rem', additionalIcons: ['e.png', 'parola.png'], showDivider:false },
+  ]
 </script>
 
 <template>
@@ -40,7 +38,7 @@ const cards = [
   <div class="w-full text-center mt-20">
     <PageTitle title="Dizionario" />
   </div>
-  <div class="flex flex-wrap justify-center items-end gap-6 mt-25 mb-20">
+  <div class="flex flex-wrap justify-center items-end gap-15 mt-25 mb-20">
     <NavigationCard
       v-for="(item, index) in cards"
       :key="index"
@@ -48,6 +46,11 @@ const cards = [
       :icon="item.icon"
       :route="item.route"
       :color="item.color"
+      :cardHeight="item.cardHeight"
+      :cardWidth="item.cardWidth"
+      :borderRadius="item.borderRadius"
+      :additionalIcons="item.additionalIcons"
+      :showDivider="item.showDivider"
     />
   </div>
   <HelpNavigator />
