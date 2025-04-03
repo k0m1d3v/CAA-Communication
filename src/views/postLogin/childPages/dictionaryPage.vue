@@ -6,114 +6,106 @@ import { useLanguageStore } from '@/stores/languageStore'
 import HelpNavigator from '@/components/helpNavigator.vue'
 import BackHome from '@/components/backHome.vue'
 import SearchBar from '@/components/searchBar.vue'
-import navigationCard from '@/components/navigationCard.vue'
-import axios from 'axios'
-import { debounce } from 'lodash'
+import NavigationCard from '@/components/navigationCard.vue'
 
+// Define the type for a pictogram
+interface Pictogram {
+  _id: string
+  keywords: { keyword: string }[]
+}
+
+// Stores
 const authStore = useAuthStore()
 const languageStore = useLanguageStore()
 const router = useRouter()
 
+// Reactive variables
 const searchQuery = ref('')
-const searchResults = ref<string[]>([])
-const pictogramResults = ref([])
+const pictograms = ref<Pictogram[]>([]) // Holds the pictogram results
+const debounceTimeout = ref<number | null>(null) // Stores debounce timeout ID
 
-const fetchPictograms = async (searchText: string) => {
-  console.log('fetchPictograms chiamato con query:', searchText)
-  const language = languageStore.language
+// Function to construct the image URL
+const computedIconUrl = (pictogram: Pictogram) => {
+  if (!pictogram._id) return 'https://via.placeholder.com/300' // Fallback image
+  const url = `https://static.arasaac.org/pictograms/${pictogram._id}/${pictogram._id}_300.png`
+  console.log('Generated icon URL:', url) // Debugging
+  return url
+}
 
+// Function to fetch pictograms from API
+const fetchPictograms = async (query: string) => {
   try {
-    const response = await axios.get(`https://api.arasaac.org/v1/pictograms/${language}/bestsearch/${searchText}`)
-    console.log('Risultati API Pictograms:', response.data)
+    const language = languageStore.language
+    console.log('Fetching pictograms for query:', query) // Debugging
 
-    pictogramResults.value = response.data
+    const response = await fetch(
+      `https://api.arasaac.org/v1/pictograms/${language}/bestsearch/${query}`,
+    )
+    if (!response.ok) throw new Error('Failed to fetch pictograms')
+
+    const data = await response.json()
+    console.log('Fetched pictograms:', data) // Debugging
+    pictograms.value = data as Pictogram[]
   } catch (error) {
-    console.error('Errore durante la chiamata API Pictograms:', error)
+    console.error('Error fetching pictograms:', error)
   }
 }
 
-const fetchKeywords = debounce(async () => {
-  console.log('fetchKeywords chiamato con query:', searchQuery.value)
-  const language = languageStore.language
+// Watch for search input and debounce API calls
+watch(searchQuery, (newQuery) => {
+  if (debounceTimeout.value) clearTimeout(debounceTimeout.value)
 
-  try {
-    const response = await axios.get(`https://api.arasaac.org/v1/keywords/${language}`)
-    console.log('Risposta API:', response.data)
-
-    const allKeywords = response.data.words || []
-
-    if (!Array.isArray(allKeywords)) {
-      throw new Error('La risposta API non è un array')
-    }
-
-    searchResults.value = allKeywords.filter((keyword: string) =>
-      keyword.toLowerCase().includes(searchQuery.value.trim().toLowerCase())
-    )
-
-    console.log('searchResults filtrati:', searchResults.value)
-  } catch (error) {
-    console.error('Errore durante la chiamata API:', error)
+  if (newQuery.trim()) {
+    debounceTimeout.value = window.setTimeout(() => {
+      fetchPictograms(newQuery)
+    }, 300) // Debounce delay
+  } else {
+    pictograms.value = [] // Clear results when search is empty
   }
-}, 300)
-
-watch(searchQuery, (newValue) => {
-  console.log('searchQuery aggiornato:', newValue)
 })
 
-function selectSuggestion(suggestion: string) {
-  searchQuery.value = suggestion
-  console.log('Suggerimento selezionato:', suggestion)
-
-  // Chiamata API per ottenere i pictogrammi
-  fetchPictograms(suggestion)
-}
-
+// Run on component mount
 onMounted(() => {
   authStore.initializeStore()
 
   watch(
     () => authStore.isLoading,
     (loading) => {
-      if (!loading) {
-        if (!authStore.user) {
-          console.warn('Nessun utente trovato, reindirizzamento al login...')
-          router.push('/login')
-        }
+      if (!loading && !authStore.user) {
+        console.warn('No user found, redirecting to login...')
+        router.push('/login')
       }
     },
     { immediate: true },
   )
 })
 </script>
-
 <template>
   <BackHome />
 
-  <SearchBar class="mt-10" v-model="searchQuery" @input="fetchKeywords" />
-
-  <!-- Elenco dei suggerimenti -->
-  <ul
-    v-if="searchResults.length"
-    class="mt-2 bg-white border border-gray-300 rounded-lg shadow-md max-h-60 overflow-y-auto"
+  <!-- Scaled container -->
+  <div
+    class="transform scale-90 md:scale-100 flex flex-col items-center mt-10 space-y-6 sm:space-y-8"
   >
-    <li
-      v-for="(result, index) in searchResults"
-      :key="index"
-      class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-      @click="selectSuggestion(result)"
-    >
-      {{ result }}
-    </li>
-  </ul>
+    <!-- SearchBar -->
+    <SearchBar class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl" v-model="searchQuery" />
 
-  <!-- Risultati dei pictogrammi -->
-  <div v-if="pictogramResults.length" class="grid grid-cols-2 gap-4 mt-6">
-    <navigationCard
-      v-for="(pictogram, index) in pictogramResults"
-      :key="index"
-      :icon="pictogram.image"
-      :text="pictogram.keywords[0]?.keyword || ''"
-    />
+    <!-- Grid container -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-6 px-4 w-full max-w-screen-lg mx-auto justify-center"
+    >
+      <!-- Responsive grid -->
+      <NavigationCard
+        v-for="pictogram in pictograms"
+        :key="pictogram._id"
+        :text="pictogram.keywords[0]?.keyword || 'No Title'"
+        :icon="computedIconUrl(pictogram)"
+        class="h-52"
+        :card-height="'200px'"
+        :border-radius="'30px'"
+        :show-divider="true"
+      />
+    </div>
   </div>
 
   <HelpNavigator />

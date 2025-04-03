@@ -3,17 +3,31 @@
     <div class="flex flex-wrap justify-center items-center gap-4">
       <div
         class="flex flex-col items-center justify-between cursor-pointer hover:shadow-2xl transition-transform transform hover:scale-105"
-        :style="{ backgroundColor: color, width: cardWidth, height: cardHeight, borderRadius: borderRadius }"
+        :style="{
+          backgroundColor: color,
+          width: cardWidth,
+          height: cardHeight,
+          borderRadius: borderRadius,
+        }"
         @click="navigate"
       >
         <div class="text-center text-3xl font-bold text-black mt-4">
           {{ text }}
         </div>
+
         <div v-if="showDivider" class="w-full h-px bg-black"></div>
+
+        <!-- Image Section -->
         <div class="mt-4 flex items-center gap-2">
           <slot name="icon">
-            <img :src="resolvedIcon" alt="Navigation Icon" class="w-20 h-20" />
+            <img
+              :src="resolvedIcon"
+              alt="Navigation Icon"
+              class="w-20 h-20"
+              @error="handleImageError"
+            />
           </slot>
+
           <div v-if="resolvedAdditionalIcons.length" class="flex gap-2">
             <img
               v-for="(icon, index) in resolvedAdditionalIcons"
@@ -21,9 +35,11 @@
               :src="icon"
               alt="Additional Icon"
               class="w-20 h-20"
+              @error="handleImageError"
             />
           </div>
         </div>
+
         <div class="mb-4"></div>
       </div>
     </div>
@@ -44,7 +60,7 @@ export default {
     },
     route: {
       type: String,
-      required: true,
+      required: false,
     },
     color: {
       type: String,
@@ -79,24 +95,36 @@ export default {
   },
   computed: {
     resolvedIcon() {
-      return this.icon ? new URL(`../assets/icons/${this.icon}`, import.meta.url).href : '';
+      // If the icon is a full URL, use it directly; otherwise, resolve local asset
+      return this.icon.startsWith('http')
+        ? this.icon
+        : new URL(`../assets/icons/${this.icon}`, import.meta.url).href
     },
     resolvedAdditionalIcons() {
       // Ensure valid URLs are resolved for additional icons
       return this.additionalIcons.map((icon) => {
         try {
-          return icon ? new URL(`../assets/icons/${icon}`, import.meta.url).href : '';
+          const iconStr = icon as string
+          return iconStr.startsWith('http')
+            ? iconStr
+            : new URL(`../assets/icons/${iconStr}`, import.meta.url).href
         } catch {
-          console.error(`Invalid icon path: ${icon}`);
-          return '';
+          console.error(`Invalid icon path: ${icon}`)
+          return ''
         }
-      });
+      })
     },
   },
   methods: {
     navigate() {
-      this.$router.push(this.route);
+      if (this.route) {
+        this.$router.push(this.route)
+      }
+    },
+    handleImageError(event: Event) {
+      console.warn('Image failed to load:', (event.target as HTMLImageElement).src)
+      ;(event.target as HTMLImageElement).src = 'https://via.placeholder.com/300' // Fallback image
     },
   },
-};
+}
 </script>
