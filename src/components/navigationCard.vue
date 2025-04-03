@@ -40,6 +40,15 @@
           </div>
         </div>
 
+        <!-- Plus Button -->
+        <button
+          v-if="addable"
+          class="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+          @click.stop="handleAdd"
+        >
+          +
+        </button>
+
         <div class="mb-4"></div>
       </div>
     </div>
@@ -52,7 +61,7 @@ export default {
   props: {
     text: {
       type: String,
-      required: true,
+      required: false,
     },
     icon: {
       type: String,
@@ -92,6 +101,15 @@ export default {
       required: false,
       default: true, // Divider is shown by default
     },
+    addable: {
+      type: Boolean,
+      required: false,
+      default: false, // Determines if the "plus" button is shown
+    },
+    id: {
+      type: String,
+      required: false,
+    },
   },
   computed: {
     resolvedIcon() {
@@ -124,6 +142,9 @@ export default {
     handleImageError(event: Event) {
       console.warn('Image failed to load:', (event.target as HTMLImageElement).src)
       ;(event.target as HTMLImageElement).src = 'https://via.placeholder.com/300' // Fallback image
+    },
+    handleAdd() {
+      this.$emit('add', this.id) // Ora passa l'ID corretto
     },
   },
 }
