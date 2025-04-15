@@ -11,7 +11,7 @@
       :addable="false"
     />
     <button
-      class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full text-sm font-bold hover:bg-red-600"
+      class="absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full text-sm font-bold hover:bg-red-600"
       @click="removePictogram"
       aria-label="Remove pictogram"
     >
@@ -57,7 +57,7 @@ const text = computed(() => {
 })
 
 const removePictogram = () => {
-  console.log('Emitting remove event with id:', props.id)
+  console.log('Emitting remove event with id:', props.id) // Debug log
   emit('remove', props.id)
 }
 </script>

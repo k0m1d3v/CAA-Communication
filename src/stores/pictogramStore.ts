@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const usePictogramStore = defineStore('pictogramStore', {
   state: () => ({
-    selectedPictograms: [] as string[], // Array to store selected pictogram IDs
+    selectedPictograms: [] as string[], // Use a plain array for reactivity
   }),
   actions: {
     addPictogram(id: string) {
@@ -11,10 +11,16 @@ export const usePictogramStore = defineStore('pictogramStore', {
       }
     },
     removePictogram(id: string) {
-      this.selectedPictograms = this.selectedPictograms.filter((pictogramId) => pictogramId !== id)
+      console.log('removePictogram called with id:', id) // Debug log
+      console.log('Before removal:', this.selectedPictograms) // Debug log
+      const index = this.selectedPictograms.indexOf(id)
+      if (index > -1) {
+        this.selectedPictograms.splice(index, 1) // Use splice to modify the array
+      }
+      console.log('After removal:', this.selectedPictograms) // Debug log
     },
     clearPictograms() {
-      this.selectedPictograms = []
+      this.selectedPictograms = [] // Reset the array
     },
   },
 })

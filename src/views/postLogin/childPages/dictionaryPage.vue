@@ -31,7 +31,7 @@
   <HelpNavigator />
 
   <!-- Display selected pictograms -->
-  <div class="mt-6">
+  <div class="mt-6 bg-white rounded-xl shadow-md p-4 max-w-screen-lg mx-auto">
     <h2 class="text-lg font-bold mb-4 text-center">Selected Pictograms:</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 px-4">
       <SelectedPictogram
@@ -39,7 +39,17 @@
         :key="id"
         :id="String(id)"
         :pictograms="pictograms"
+        @remove="removePictogram"
       />
+    </div>
+    <!-- Clear button -->
+    <div class="flex justify-center mt-4">
+      <button
+        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        @click="clearSelectedPictograms"
+      >
+        Clear All
+      </button>
     </div>
   </div>
 </template>
@@ -108,6 +118,18 @@ watch(searchQuery, (newQuery) => {
     pictograms.value = []
   }
 })
+
+// Method to handle removing a pictogram
+const removePictogram = (id: string) => {
+  console.log('Removing pictogram with id:', id) // Debug log
+  pictogramStore.removePictogram(id)
+}
+
+// Method to clear all selected pictograms
+const clearSelectedPictograms = () => {
+  console.log('Clearing all selected pictograms') // Debug log
+  pictogramStore.clearPictograms()
+}
 
 // Run on component mount
 onMounted(() => {
