@@ -3,5 +3,157 @@
 body {
   background-color: #fcffa1;
 }
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
 
-/* NON MODIFICARE ASSOLUTAMENTE QUESTO FILE CSS */
+button.tasto {
+  background-color: #ffffff;
+  color: #5a8dc4;
+  border: 2px solid #5a8dc4;
+}
+
+button.tasto:hover {
+  background-color: #f0f4fa;
+}
+
+button.tasto:focus {
+  outline: 2px solid #5a8dc4;
+  outline-offset: 2px;
+}
+
+button.login {
+  background: none; /* Rimuove il colore di sfondo */
+  border: none; /* Rimuove il bordo */
+  color: inherit;
+
+}
+button.login:hover {
+  background-color: #0b5a9e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+button.login:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+button.register {
+  background: none; /* Rimuove il colore di sfondo */
+  border: none; /* Rimuove il bordo */
+  color: inherit;
+
+}
+
+button.register:hover {
+  background-color: #0b5a9e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button.register:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+/*Credits page buttons*/
+button.loginCredits {
+  background: none; /* Rimuove il colore di sfondo */
+  border: none; /* Rimuove il bordo */
+  color: inherit;
+
+}
+button.loginCredits:hover {
+  background-color: #0b5a9e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+button.loginCredits:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+button.registerCredits {
+  background: none; /* Rimuove il colore di sfondo */
+  border: none; /* Rimuove il bordo */
+  color: inherit;
+
+}
+
+button.registerCredits:hover {
+  background-color: #0b5a9e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button.registerCredits:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+/* Buttons position */
+.absolute {
+  position: absolute;
+}
+
+.top-4 {
+  top: 1rem;
+}
+
+.left-4 {
+  left: 1rem;
+}
+
+
+/* Disabled button */
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  border: none;
+}
+
+
+/* Title animation*/
+@keyframes bounce-letter {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.rainbow-bounce {
+  display: inline-block;
+  animation: bounce-letter 0.6s ease-out;
+  animation-fill-mode: both;
+  animation-delay: 0ms;
+  font-weight: 600; /* più leggero */
+  color: rgb(255, 255, 255); /* o qualsiasi altro colore */
+}
+
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+.delay-900 { animation-delay: 900ms; }
+.delay-\[1000ms\] { animation-delay: 1000ms; }
+.delay-\[1100ms\] { animation-delay: 1100ms; }
+
+
+

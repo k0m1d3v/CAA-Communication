@@ -9,6 +9,7 @@
       Go back to the homepage
     </router-link>
   </div>
+
 </template>
 
 <script lang="ts">

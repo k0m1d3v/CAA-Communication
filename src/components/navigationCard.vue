@@ -2,12 +2,14 @@
   <div class="flex justify-center w-[30vh]">
     <div class="flex flex-wrap justify-center items-center gap-4">
       <div
-        class="flex flex-col items-center justify-between cursor-pointer hover:shadow-2xl transition-transform transform hover:scale-105"
+        class="flex flex-col items-center justify-between cursor-pointer hover:shadow-2xl transition-transform transform hover:scale-105 border border-black"
         :style="{
           backgroundColor: color,
           width: cardWidth,
           height: cardHeight,
           borderRadius: borderRadius,
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Ombra leggera di default
+
         }"
         @click="navigate"
       >
@@ -89,7 +91,7 @@ export default {
     borderRadius: {
       type: String,
       required: false,
-      default: '1.5rem',
+      default: '3rem',
     },
     additionalIcons: {
       type: Array,

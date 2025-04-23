@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LandingPage from '../views/preLogIn/LandingPage.vue'
 import RegistrationPage from '@/views/preLogIn/RegistrationPage.vue'
 import LoginPage from '@/views/preLogIn/LoginPage.vue'
+import CreditsPage from '@/views/preLogIn/CreditsPage.vue'
 
 // Generic pages
 import NotFoundPage from '../views/generic/NotFoundPage.vue'
@@ -15,6 +16,8 @@ import ParliamoPage from '../views/postLogin/childPages/parliamoPage.vue'
 import DizionarioPage from '../views/postLogin/childPages/dizionarioPage.vue'
 import GiochiPage from '../views/postLogin/childPages/giochiPage.vue'
 import DictionaryPage from '../views/postLogin/childPages/dictionaryPage.vue'
+import StorytellerPage from '../views/postLogin/childPages/StorytellerPage.vue'
+import NologPage from '@/views/postLogin/childPages/NologPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +66,21 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       component: logoutPage,
+    },
+    {
+      path: '/nolog',
+      name: 'NologPage',
+      component: NologPage,
+    },
+    {
+      path:  '/storyteller',
+      name: 'Storyteller',
+      component: StorytellerPage,
+    },
+    {
+      path:  '/credits',
+      name: 'Credits',
+      component: CreditsPage,
     },
     {
       path: '/dictionary',
