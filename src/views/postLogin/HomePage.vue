@@ -28,17 +28,17 @@ onMounted(() => {
 })
 
 const cards = [
-  { text: 'Parliamo', icon: 'parliamoIcon.png', route: '/parliamo', color: '#ffdd57' },
-  { text: 'Dizionario', icon: 'dizionarioIcon.png', route: '/dizionario', color: '#57ddff' },
-  { text: 'Giochi', icon: 'giochiIcon.png', route: '/giochi', color: '#ff5757' },
+  { text: 'Parliamo', icon: 'parliamoIcon.png', route: '/parliamo', color: '#7DA7D9' },
+  { text: 'Dizionario', icon: 'dizionarioIcon.png', route: '/dizionario', color: '#FF9AA2' },
+  { text: 'Giochi', icon: 'giochiIcon.png', route: '/giochi', color: '#77DD77' },
 ]
 </script>
 
 <template>
   <div class="w-full text-center mt-20">
-    <PageTitle title="Io Dico" />
+    <PageTitle title="ComuniCAA" />
   </div>
-  <div class="flex flex-wrap justify-center items-end gap-6 mt-25 mb-20">
+  <div class="flex flex-wrap justify-center items-end gap-16 mt-25 mb-20">
     <NavigationCard
       v-for="(item, index) in cards"
       :key="index"

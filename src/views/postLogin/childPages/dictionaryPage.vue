@@ -121,9 +121,10 @@ watch(searchQuery, (newQuery) => {
 
 // Method to handle removing a pictogram
 const removePictogram = (id: string) => {
-  console.log('Removing pictogram with id:', id) // Debug log
+  console.log('Removing pictogram with id:', id)
   pictogramStore.removePictogram(id)
 }
+
 
 // Method to clear all selected pictograms
 const clearSelectedPictograms = () => {
