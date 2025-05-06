@@ -1,6 +1,5 @@
 import { createI18n } from 'vue-i18n'
 
-
 const messages = {
 
   // English translations (defa7ult)
@@ -72,6 +71,11 @@ const messages = {
         games: 'Games',
       },
     },
+    notFoundPage: {
+      title: '404 - Page Not Found',
+      subtitle: 'Sorry, the page you are looking for does not exist.',
+      backToHome: 'Back to Home',
+    },
   },
 
   // Italian translations
@@ -142,6 +146,11 @@ const messages = {
         dictionary: 'Dizionario',
         games: 'Giochi',
       },
+    },
+    notFoundPage: {
+      title: '404 - Pagina non trovata',
+      subtitle: 'Spiacente, la pagina che stai cercando non esiste.',
+      backToHome: 'Torna alla Home',
     },
   },
 }
