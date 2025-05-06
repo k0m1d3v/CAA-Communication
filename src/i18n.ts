@@ -76,6 +76,16 @@ const messages = {
       subtitle: 'Sorry, the page you are looking for does not exist.',
       backToHome: 'Back to Home',
     },
+    dictionaryPrePage: {
+      title: 'Dictionary',
+      card1: 'Fast Response',
+      card2: 'Dictionary',
+    },
+    dictionaryPage: {
+      searchPlaceholder: 'Search for a word...',
+      SelectedPictogram: 'Selected Pictograms',
+      clearButton: 'Clear All',
+    },
   },
 
   // Italian translations
@@ -151,6 +161,16 @@ const messages = {
       title: '404 - Pagina non trovata',
       subtitle: 'Spiacente, la pagina che stai cercando non esiste.',
       backToHome: 'Torna alla Home',
+    },
+    dictionaryPrePage: {
+      title: 'Dizionario',
+      card1: 'Risposta Veloce',
+      card2: 'Dizionario',
+    },
+    dictionaryPage: {
+      searchPlaceholder: 'Cerca una parola...',
+      SelectedPictogram: 'Pittogramma Selezionati',
+      clearButton: 'Cancella Tutto',
     },
   },
 }

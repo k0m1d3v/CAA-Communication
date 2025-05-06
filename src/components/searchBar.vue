@@ -5,7 +5,7 @@
         type="text"
         :value="modelValue"
         @input="updateValue(($event.target as HTMLInputElement).value)"
-        placeholder="Search..."
+        :placeholder="t('dictionaryPage.searchPlaceholder')"
         class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
       <button
@@ -23,6 +23,9 @@
 
 <script lang="ts" setup>
 import { defineProps, defineEmits } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // Props e eventi
 defineProps({

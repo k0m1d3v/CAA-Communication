@@ -6,7 +6,11 @@
     class="transform scale-90 md:scale-100 flex flex-col items-center mt-10 space-y-6 sm:space-y-8"
   >
     <!-- SearchBar -->
-    <SearchBar class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl" v-model="searchQuery" />
+    <SearchBar
+      class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl"
+      v-model="searchQuery"
+      :placeholder="t('dictionaryPage.searchPlaceholder')"
+    />
 
     <!-- Grid container -->
     <div
@@ -16,7 +20,7 @@
       <NavigationCard
         v-for="pictogram in pictograms"
         :key="pictogram._id"
-        :text="pictogram.keywords[0]?.keyword || 'No Title'"
+        :text="pictogram.keywords[0]?.keyword || t('dictionaryPage.noTitle')"
         :icon="computedIconUrl(pictogram)"
         class="h-52"
         :card-height="'200px'"
@@ -32,7 +36,9 @@
 
   <!-- Display selected pictograms -->
   <div class="mt-6 bg-white rounded-xl shadow-md p-4 max-w-screen-lg mx-auto">
-    <h2 class="text-lg font-bold mb-4 text-center">Selected Pictograms:</h2>
+    <h2 class="text-lg font-bold mb-4 text-center">
+      {{ t('dictionaryPage.SelectedPictogram') }}
+    </h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 px-4">
       <SelectedPictogram
         v-for="id in pictogramStore.selectedPictograms"
@@ -48,7 +54,7 @@
         class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
         @click="clearSelectedPictograms"
       >
-        Clear All
+        {{ t('dictionaryPage.clearButton') }}
       </button>
     </div>
   </div>
@@ -65,6 +71,7 @@ import BackHome from '@/components/backHome.vue'
 import SearchBar from '@/components/searchBar.vue'
 import NavigationCard from '@/components/navigationCard.vue'
 import SelectedPictogram from '@/components/selectedPictogram.vue'
+import { useI18n } from 'vue-i18n'
 
 // Define the type for a pictogram
 interface Pictogram {
@@ -77,6 +84,7 @@ const authStore = useAuthStore()
 const languageStore = useLanguageStore()
 const pictogramStore = usePictogramStore()
 const router = useRouter()
+const { t } = useI18n()
 
 // Reactive variables
 const searchQuery = ref('')
@@ -124,7 +132,6 @@ const removePictogram = (id: string) => {
   console.log('Removing pictogram with id:', id)
   pictogramStore.removePictogram(id)
 }
-
 
 // Method to clear all selected pictograms
 const clearSelectedPictograms = () => {
