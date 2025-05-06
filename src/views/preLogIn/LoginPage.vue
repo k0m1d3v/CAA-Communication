@@ -4,6 +4,9 @@ import { auth } from '../../firebaseConfig.ts'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useAuthStore } from '../../stores/authStore'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const email = ref('')
 const password = ref('')
@@ -37,32 +40,32 @@ const login = async () => {
   <main class="flex items-center justify-center min-h-screen" style="background-color: #fcffa1">
     <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
       <h1 class="text-3xl font-bold text-center mb-6" style="color: #7da7d9">
-        Login to CAA Communication
+        {{ t('loginPage.title') }}
       </h1>
       <form @submit.prevent="login" class="space-y-6">
         <div>
           <label for="email" class="block text-sm font-medium" style="color: #7da7d9">
-            Email Address
+            {{ t('loginPage.emailLabel') }}
           </label>
           <input
             v-model="email"
             type="email"
             id="email"
             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#77DD77]"
-            placeholder="Enter your email"
+            :placeholder="t('loginPage.emailPlaceholder')"
           />
         </div>
 
         <div>
           <label for="password" class="block text-sm font-medium" style="color: #7da7d9">
-            Password
+            {{ t('loginPage.passwordLabel') }}
           </label>
           <input
             v-model="password"
             type="password"
             id="password"
             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF9AA2]"
-            placeholder="Enter your password"
+            :placeholder="t('loginPage.passwordPlaceholder')"
           />
         </div>
 
@@ -74,14 +77,14 @@ const login = async () => {
             class="w-full py-2 px-4 bg-[#7DA7D9] text-white font-bold rounded-lg hover:bg-[#77DD77] transition duration-300"
             :disabled="isLoading"
           >
-            {{ isLoading ? 'Logging in...' : 'Login' }}
+            {{ isLoading ? t('loginPage.loggingIn') : t('loginPage.loginButton') }}
           </button>
         </div>
       </form>
 
       <p class="text-center text-sm mt-4" style="color: #7da7d9">
-        Don't have an account?
-        <a href="/register" class="font-bold" style="color: #ff9aa2">Sign up</a>
+        {{ t('loginPage.noAccount') }}
+        <a href="/register" class="font-bold" style="color: #ff9aa2">{{ t('loginPage.signUpLink') }}</a>
       </p>
     </div>
   </main>

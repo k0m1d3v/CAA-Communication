@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import './assets/main.css'
-import LanguageSwitch from '@/components/languageSwitch.vue';
+import LanguageSwitch from '@/components/languageSwitch.vue'
+
 </script>
 
 <template>

@@ -5,6 +5,9 @@ import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const router = useRouter()
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 onMounted(async () => {
   try {
@@ -18,6 +21,6 @@ onMounted(async () => {
 
 <template>
   <div class="flex items-center justify-center min-h-screen">
-    <p>Logging out...</p>
+    <p>{{t('loggingOut')}}</p>
   </div>
 </template>
