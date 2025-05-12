@@ -27,10 +27,7 @@ onMounted(() => {
   )
 })
 
-const cards = [
-  { text: 'Ascolta', icon: 'parliamoIcon.png', route: '/parliamo', color: '#ffdd57' },
-  { text: 'Racconta', icon: 'dizionarioIcon.png', route: '/parliamo', color: '#57ddff' },
-]
+const cards = [{ text: 'Impara', icon: 'parliamoIcon.png', route: '/impara', color: '#ffdd57' }]
 </script>
 
 <template>

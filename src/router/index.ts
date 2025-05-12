@@ -18,6 +18,7 @@ import GiochiPage from '../views/postLogin/childPages/giochiPage.vue'
 import DictionaryPage from '../views/postLogin/childPages/dictionaryPage.vue'
 import StorytellerPage from '../views/postLogin/childPages/StorytellerPage.vue'
 import NologPage from '@/views/postLogin/childPages/NologPage.vue'
+import ImparaPage from '@/views/postLogin/childPages/imparaPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,12 +74,12 @@ const router = createRouter({
       component: NologPage,
     },
     {
-      path:  '/storyteller',
+      path: '/storyteller',
       name: 'Storyteller',
       component: StorytellerPage,
     },
     {
-      path:  '/credits',
+      path: '/credits',
       name: 'Credits',
       component: CreditsPage,
     },
@@ -86,7 +87,12 @@ const router = createRouter({
       path: '/dictionary',
       name: 'Dictionary',
       component: DictionaryPage,
-    }
+    },
+    {
+      path: '/impara',
+      name: 'Impara',
+      component: ImparaPage,
+    },
   ],
 })
 
