@@ -1,7 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
 const messages = {
-
   // English translations (defa7ult)
   en: {
     navbar: {
@@ -13,11 +12,13 @@ const messages = {
       appTagline: 'Connecting people, empowering communication',
       dictionary: 'Dictionary',
       whatIsCAA: 'What is CAA Communication?',
-      whatIsCAADescription: 'CAA Communication is a platform designed to enhance communication and collaboration...',
+      whatIsCAADescription:
+        'CAA Communication is a platform designed to enhance communication and collaboration...',
       howItWorks: 'How the Website Works',
       howItWorksDescription: 'Our website is built to be user-friendly and efficient...',
       projectGoals: 'Our Project Goals',
-      projectGoalsDescription: 'At CAA Communication, we aim to revolutionize the way people interact...',
+      projectGoalsDescription:
+        'At CAA Communication, we aim to revolutionize the way people interact...',
     },
     creditsPage: {
       poweredBy: 'Powered by IIS Volta Lodi',
@@ -26,11 +27,19 @@ const messages = {
       teamMembers: {
         mirko: {
           name: 'Mirko Virtuani',
-          description: 'Hi, I\'m Mirko Virtuani, a student at IIS Volta Lodi...',
+          description: "Hi, I'm Mirko Virtuani, a student at IIS Volta Lodi...",
         },
         lorenzo: {
           name: 'Lorenzo Battista',
-          description: 'Hi, I\'m Lorenzo Battista, a student at IIS Volta Lodi...',
+          description: "Hi, I'm Lorenzo Battista, a student at IIS Volta Lodi...",
+        },
+        francesco: {
+          name: 'Francesco Fava',
+          description: "Hi, I'm Francesco Fava, a student at IIS Volta Lodi...",
+        },
+        arlan: {
+          name: 'Arlan Apenov',
+          description: "Hi, I'm Arlan Apenov, a student at IIS Volta Lodi...",
         },
       },
     },
@@ -98,12 +107,14 @@ const messages = {
       appName: 'Comunicazione CAA',
       appTagline: 'Collegare le persone, potenziare la comunicazione',
       dictionary: 'Dizionario',
-      whatIsCAA: 'Che cos\'è la Comunicazione CAA?',
-      whatIsCAADescription: 'La Comunicazione CAA è una piattaforma progettata per migliorare la comunicazione...',
+      whatIsCAA: "Che cos'è la Comunicazione CAA?",
+      whatIsCAADescription:
+        'La Comunicazione CAA è una piattaforma progettata per migliorare la comunicazione...',
       howItWorks: 'Come funziona il sito web',
       howItWorksDescription: 'Il nostro sito è progettato per essere intuitivo ed efficiente...',
       projectGoals: 'I nostri obiettivi',
-      projectGoalsDescription: 'Alla Comunicazione CAA, miriamo a rivoluzionare il modo in cui le persone interagiscono...',
+      projectGoalsDescription:
+        'Alla Comunicazione CAA, miriamo a rivoluzionare il modo in cui le persone interagiscono...',
     },
     creditsPage: {
       poweredBy: 'Realizzato da IIS Volta Lodi',
@@ -112,11 +123,19 @@ const messages = {
       teamMembers: {
         mirko: {
           name: 'Mirko Virtuani',
-          description: 'Ciao, sono Mirko Virtuani, uno studente dell\'IIS Volta Lodi...',
+          description: "Ciao, sono Mirko Virtuani, uno studente dell'IIS Volta Lodi...",
         },
         lorenzo: {
           name: 'Lorenzo Battista',
-          description: 'Ciao, sono Lorenzo Battista, uno studente dell\'IIS Volta Lodi...',
+          description: "Ciao, sono Lorenzo Battista, uno studente dell'IIS Volta Lodi...",
+        },
+        francesco: {
+          name: 'Francesco Fava',
+          description: "Ciao, sono Francesco Fava, uno studente dell'IIS Volta Lodi...",
+        },
+        arlan: {
+          name: 'Arlan Apenov',
+          description: "Ciao, sono Arlan Apenov, uno studente dell'IIS Volta Lodi...",
         },
       },
     },
