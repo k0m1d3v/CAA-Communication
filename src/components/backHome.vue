@@ -1,6 +1,6 @@
 <template>
   <button
-    @click="goHome"
+    @click="handleClick"
     class="fixed top-5 left-5 z-50 p-2 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300"
     aria-label="Go to Home"
   >
@@ -12,7 +12,8 @@
 export default {
   name: 'BackHome',
   methods: {
-    goHome() {
+    handleClick() {
+      this.$emit('before-home')
       this.$router.push('/home')
     },
   },

@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const cards = [
-  { text: t('dictionaryPrePage.card1'), icon: 'risposta.png', route: '/quick-answers', color: '#F4C2C2', cardHeight:'12rem', cardWidth:'20.5rem', borderRadius:'5rem', additionalIcons: ['rapido.png'], showDivider:false },
+  { text: t('dictionaryPrePage.card1'), icon: 'risposta.png', route: '/risposteRapide', color: '#F4C2C2', cardHeight:'12rem', cardWidth:'20.5rem', borderRadius:'5rem', additionalIcons: ['rapido.png'], showDivider:false },
   { text: t('dictionaryPrePage.card2'), icon: 'dizionario.png', route: '/dictionary', color: '#FF9AA2', cardHeight:'12rem', cardWidth:'20.5rem', borderRadius:'5rem', additionalIcons: ['e.png', 'parola.png'], showDivider:false },
   ]
 </script>

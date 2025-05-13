@@ -20,8 +20,6 @@ function inizia() {
     mainDiv.style.display = 'none'
   }
 
-  let score = 0
-
   const gameDiv = document.createElement('div')
   gameDiv.className = 'game-container'
 
@@ -123,11 +121,22 @@ function inizia() {
     })
 }
 
+function removeGameDiv() {
+  const gameDiv = document.querySelector('.game-container')
+  if (gameDiv) {
+    gameDiv.remove()
+  }
+  const mainDiv = document.querySelector('.max-w-md')
+  if (mainDiv) {
+    mainDiv.style.display = ''
+  }
+}
+
 defineExpose({ inizia })
 </script>
 
 <template>
-  <BackHome />
+  <BackHome @before-home="removeGameDiv" />
   <div
     class="max-w-md mx-auto text-center mt-100 bg-white border-2 border-blue-500 rounded-lg shadow-lg p-6 relative"
   >
