@@ -25,12 +25,20 @@
         <div v-else key="open" class="flex items-center justify-between w-full px-4">
           <span class="text-3xl font-bold text-black">?</span>
           <img src="@/assets/icons/undefined.png" alt="Menu Icon" class="h-12" />
+          <!-- Voice Reader Button -->
+          <button
+            @click.stop="activateVoiceReader"
+            :class="['ml-4 px-3 py-2 rounded bg-blue-400 text-white font-bold', listening ? 'ring-2 ring-blue-700' : '']"
+            title="Attiva lettore vocale"
+          >
+            <span v-if="!listening">🔊</span>
+            <span v-else>Seleziona testo...</span>
+          </button>
         </div>
       </transition>
     </div>
   </div>
 </template>
-
 
 <script lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -40,15 +48,43 @@ export default {
   setup() {
     const isOpen = ref(false)
     const menuRef = ref<HTMLElement | null>(null)
+    const listening = ref(false)
+    let lastClickHandler: ((e: MouseEvent) => void) | null = null
 
     const toggleMenu = () => {
       isOpen.value = !isOpen.value
+      if (!isOpen.value) listening.value = false
     }
 
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
         isOpen.value = false
+        listening.value = false
       }
+    }
+
+    // Voice Reader logic
+    const activateVoiceReader = () => {
+      listening.value = true
+      // Remove previous handler if any
+      if (lastClickHandler) document.removeEventListener('click', lastClickHandler, true)
+      lastClickHandler = (e: MouseEvent) => {
+        if (!menuRef.value || menuRef.value.contains(e.target as Node)) return
+        const el = e.target as HTMLElement
+        let text = ''
+        if (el.innerText) text = el.innerText
+        else if (el.textContent) text = el.textContent || ''
+        if (text.trim()) {
+          window.speechSynthesis.cancel()
+          const utter = new window.SpeechSynthesisUtterance(text)
+          window.speechSynthesis.speak(utter)
+        }
+        listening.value = false
+        document.removeEventListener('click', lastClickHandler!, true)
+      }
+      setTimeout(() => {
+        document.addEventListener('click', lastClickHandler!, true)
+      }, 0)
     }
 
     onMounted(() => {
@@ -57,12 +93,15 @@ export default {
 
     onBeforeUnmount(() => {
       document.removeEventListener('click', handleClickOutside)
+      if (lastClickHandler) document.removeEventListener('click', lastClickHandler, true)
     })
 
     return {
       isOpen,
       toggleMenu,
       menuRef,
+      listening,
+      activateVoiceReader,
     }
   },
 }
