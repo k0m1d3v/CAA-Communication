@@ -38,17 +38,33 @@
 </template>
 
 <script lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useLanguageStore } from '@/stores/languageStore'
 
 export default {
   setup() {
     const { locale } = useI18n()
+    const languageStore = useLanguageStore()
 
-    const currentLanguage = computed(() => locale.value)
+    // Sync Pinia store with i18n locale
+    const currentLanguage = computed({
+      get: () => languageStore.language,
+      set: (val) => languageStore.setLanguage(val)
+    })
+
+    // Watch for store changes and update i18n
+    watch(
+      () => languageStore.language,
+      (newLang) => {
+        locale.value = newLang
+      },
+      { immediate: true }
+    )
 
     const toggleLanguage = () => {
-      locale.value = locale.value === 'en' ? 'it' : 'en'
+      const newLang = currentLanguage.value === 'en' ? 'it' : 'en'
+      currentLanguage.value = newLang
     }
 
     return {
