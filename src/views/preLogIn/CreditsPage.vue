@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import HelpNavigator from '@/components/helpNavigator.vue'
 
 const { t } = useI18n()
 </script>
@@ -224,5 +225,8 @@ const { t } = useI18n()
         </p>
       </div>
     </footer>
+
+    <!-- Help Navigator -->
+     <HelpNavigator class="fixed bottom-4 right-4 z-50" />
   </main>
 </template>
