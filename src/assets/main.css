@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './accessibility.css';
 
 body {
   background-color: #fcffa1;
@@ -35,7 +36,6 @@ button.login {
   background: none; /* Rimuove il colore di sfondo */
   border: none; /* Rimuove il bordo */
   color: inherit;
-
 }
 button.login:hover {
   background-color: #0b5a9e;
@@ -50,7 +50,6 @@ button.register {
   background: none; /* Rimuove il colore di sfondo */
   border: none; /* Rimuove il bordo */
   color: inherit;
-
 }
 
 button.register:hover {
@@ -67,7 +66,6 @@ button.loginCredits {
   background: none; /* Rimuove il colore di sfondo */
   border: none; /* Rimuove il bordo */
   color: inherit;
-
 }
 button.loginCredits:hover {
   background-color: #0b5a9e;
@@ -82,7 +80,6 @@ button.registerCredits {
   background: none; /* Rimuove il colore di sfondo */
   border: none; /* Rimuove il bordo */
   color: inherit;
-
 }
 
 button.registerCredits:hover {
@@ -107,7 +104,6 @@ button.registerCredits:focus {
   left: 1rem;
 }
 
-
 /* Disabled button */
 button:disabled {
   background-color: #cccccc;
@@ -115,7 +111,6 @@ button:disabled {
   cursor: not-allowed;
   border: none;
 }
-
 
 /* Title animation*/
 @keyframes bounce-letter {
@@ -142,18 +137,36 @@ button:disabled {
   color: rgb(255, 255, 255); /* o qualsiasi altro colore */
 }
 
-
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
-.delay-800 { animation-delay: 800ms; }
-.delay-900 { animation-delay: 900ms; }
-.delay-\[1000ms\] { animation-delay: 1000ms; }
-.delay-\[1100ms\] { animation-delay: 1100ms; }
-
-
-
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+.delay-600 {
+  animation-delay: 600ms;
+}
+.delay-700 {
+  animation-delay: 700ms;
+}
+.delay-800 {
+  animation-delay: 800ms;
+}
+.delay-900 {
+  animation-delay: 900ms;
+}
+.delay-\[1000ms\] {
+  animation-delay: 1000ms;
+}
+.delay-\[1100ms\] {
+  animation-delay: 1100ms;
+}

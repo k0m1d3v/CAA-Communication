@@ -1,3 +1,8 @@
+<!--
+  NOTA: Questo componente è stato sostituito da un language switcher integrato direttamente
+  nella LandingPage.vue per un design più coerente.
+  Se necessario per altre pagine, può essere riutilizzato.
+-->
 <template>
   <div class="flex items-center space-x-4 fixed top-10 right-10 z-50">
     <svg
@@ -7,7 +12,10 @@
       :class="{ 'opacity-40': currentLanguage !== 'en', 'opacity-100': currentLanguage === 'en' }"
     >
       <rect width="640" height="480" fill="#b22234" />
-      <path fill="#fff" d="M0 37.5h640v37.5H0zM0 112.5h640v37.5H0zM0 187.5h640v37.5H0zM0 262.5h640v37.5H0zM0 337.5h640v37.5H0zM0 412.5h640v37.5H0z" />
+      <path
+        fill="#fff"
+        d="M0 37.5h640v37.5H0zM0 112.5h640v37.5H0zM0 187.5h640v37.5H0zM0 262.5h640v37.5H0zM0 337.5h640v37.5H0zM0 412.5h640v37.5H0z"
+      />
       <path fill="#3c3b6e" d="M0 0h280v210H0z" />
     </svg>
     <button
@@ -50,7 +58,7 @@ export default {
     // Sync Pinia store with i18n locale
     const currentLanguage = computed({
       get: () => languageStore.language,
-      set: (val) => languageStore.setLanguage(val)
+      set: (val) => languageStore.setLanguage(val),
     })
 
     // Watch for store changes and update i18n
@@ -59,7 +67,7 @@ export default {
       (newLang) => {
         locale.value = newLang
       },
-      { immediate: true }
+      { immediate: true },
     )
 
     const toggleLanguage = () => {
