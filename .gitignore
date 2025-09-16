@@ -29,7 +29,4 @@ coverage
 
 *.tsbuildinfo
 
-# Ignore Firebase configuration file
-src/firebaseConfig.ts
-
 .env
