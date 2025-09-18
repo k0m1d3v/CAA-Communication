@@ -12,14 +12,17 @@
     @click="navigate"
   >
     <div
-      class="text-center text-3xl font-bold text-white mt-4"
-      style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3)"
+      class="text-center text-3xl font-bold mt-4"
+      :class="{ 'text-white': color !== '#ffffff', 'text-gray-800': color === '#ffffff' }"
+      :style="{
+        textShadow: color === '#ffffff' ? 'none' : '1px 1px 3px rgba(0, 0, 0, 0.8)'
+      }"
     >
       {{ text }}
     </div>
 
-    <!-- Rimossa la linea divisoria nera -->
-    <!-- <div v-if="showDivider" class="w-full h-px bg-black"></div> -->
+    <!-- Background overlay for white cards -->
+    <div v-if="color === '#ffffff'" class="absolute top-0 left-0 right-0 rounded-t-[16px] h-16 bg-gradient-to-b from-gray-100 to-transparent"></div>
 
     <!-- Image Section -->
     <div class="mt-4 flex items-center gap-2">

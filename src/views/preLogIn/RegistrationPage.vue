@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { auth } from '../../firebaseConfig'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useLanguageStore } from '../../stores/languageStore'
@@ -30,7 +30,14 @@ const register = async () => {
   errorMessage.value = ''
 
   try {
+    // Create the user account
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+
+    // Update the user profile with display name
+    await updateProfile(userCredential.user, {
+      displayName: name.value
+    })
+
     console.log('User registered successfully:', userCredential.user)
 
     // Initialize auth store state
