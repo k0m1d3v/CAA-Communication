@@ -221,18 +221,18 @@ const router = useRouter()
 const savedPhrases = computed(() => pictogramStore.savedPhrases)
 
 // Use phrase - load it back into the dictionary for editing/use
-const usePhrase = (phrase: any) => {
+interface SavedPhrase {
+  name: string;
+  pictogramIds: string[];
+}
+
+const usePhrase = (phrase: SavedPhrase) => {
   // Clear current selection and load this phrase
   pictogramStore.clearPictograms()
 
   // Load pictograms from the phrase
   phrase.pictogramIds.forEach((id: string) => {
-    // We need to reconstruct the pictogram object
-    const pictogram = {
-      _id: id,
-      keywords: [{ keyword: 'Loaded from phrase' }], // This would ideally come from stored data
-    }
-    pictogramStore.addPictogram(pictogram)
+    pictogramStore.addPictogram(id)
   })
 
   // Navigate to dictionary to show the loaded phrase
@@ -240,20 +240,36 @@ const usePhrase = (phrase: any) => {
 }
 
 // Speak phrase using Web Speech API
-const speakPhrase = (phrase: any) => {
+const speakPhrase = (phrase: SavedPhrase) => {
   if ('speechSynthesis' in window) {
-    // Create a text representation of the phrase
-    // In a real implementation, you might want to store actual text or keywords
-    const text = phrase.name // For now, speak the phrase name
+    // Get keywords for each pictogram in sequence
+    fetch(`https://api.arasaac.org/api/pictograms/it/${phrase.pictogramIds.join(',')}`)
+      .then(response => response.json())
+      .then(pictograms => {
+        // Create text representation of the phrase
+        const text = Array.isArray(pictograms)
+          ? pictograms.map(p => p.keywords[0]).join(' ')
+          : pictograms.keywords[0]
 
-    window.speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.rate = 0.8
-    utterance.pitch = 1
-    utterance.volume = 0.8
-    utterance.lang = 'it-IT'
+        window.speechSynthesis.cancel()
+        const utterance = new SpeechSynthesisUtterance(text)
+        utterance.rate = 0.8
+        utterance.pitch = 1
+        utterance.volume = 0.8
+        utterance.lang = 'it-IT'
 
-    window.speechSynthesis.speak(utterance)
+        window.speechSynthesis.speak(utterance)
+      })
+      .catch(error => {
+        console.error('Error fetching pictogram keywords:', error)
+        // Fallback to phrase name if API call fails
+        const utterance = new SpeechSynthesisUtterance(phrase.name)
+        utterance.rate = 0.8
+        utterance.pitch = 1
+        utterance.volume = 0.8
+        utterance.lang = 'it-IT'
+        window.speechSynthesis.speak(utterance)
+      })
   } else {
     alert(t('quickResponsesPage.speechNotSupported'))
   }
