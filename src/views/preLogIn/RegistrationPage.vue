@@ -3,7 +3,12 @@ import { ref } from 'vue'
 import { auth } from '../../firebaseConfig'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { useLanguageStore } from '../../stores/languageStore'
+import { useAuthStore } from '../../stores/authStore'
+
+const router = useRouter()
+const authStore = useAuthStore()
 
 const { t } = useI18n()
 const languageStore = useLanguageStore()
@@ -25,10 +30,14 @@ const register = async () => {
   errorMessage.value = ''
 
   try {
-    await createUserWithEmailAndPassword(auth, email.value, password.value)
-    console.log('User registered successfully')
-    // Redirect to login or dashboard after registration
-    window.location.href = '/home'
+    const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    console.log('User registered successfully:', userCredential.user)
+
+    // Initialize auth store state
+    await authStore.initializeStore()
+
+    // Use Vue Router for client-side navigation
+    await router.replace({ name: 'HomePage' })
   } catch (error: unknown) {
     if (error instanceof Error) {
       errorMessage.value = error.message
