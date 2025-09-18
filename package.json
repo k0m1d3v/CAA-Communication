@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.17",
-    "axios": "^1.8.4",
+    "axios": "^1.12.2",
     "firebase": "^11.10.0",
     "pinia": "^3.0.1",
     "tailwindcss": "^4.0.17",
