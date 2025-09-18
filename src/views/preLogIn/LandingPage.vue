@@ -37,46 +37,9 @@ watch(
 )
 
 // Caratteristiche principali della piattaforma CAA
-const features = [
-  {
-    icon: '🗣️',
-    title: 'Comunicazione Facilitata',
-    description: "Simboli, pittogrammi e strumenti per facilitare l'espressione",
-  },
-  {
-    icon: '📚',
-    title: 'Dizionario Visivo',
-    description: 'Ampia raccolta di simboli organizzati per categorie',
-  },
-  {
-    icon: '🎮',
-    title: 'Apprendimento Ludico',
-    description: 'Giochi educativi per migliorare le competenze comunicative',
-  },
-  {
-    icon: '📈',
-    title: 'Tracciamento Progressi',
-    description: 'Monitora i miglioramenti nel tempo',
-  },
-]
 
-const benefits = [
-  {
-    title: 'Per persone con disabilità',
-    description: 'Risorse gratuite per chi ha difficoltà nel linguaggio verbale',
-    icon: '♿',
-  },
-  {
-    title: 'Per educatori e terapisti',
-    description: 'Strumenti educativi aperti per la riabilitazione',
-    icon: '👨‍🏫',
-  },
-  {
-    title: 'Per famiglie',
-    description: 'Supporto gratuito per migliorare la comunicazione in casa',
-    icon: '👨‍👩‍👧‍👦',
-  },
-]
+
+
 </script>
 
 <template>
@@ -166,36 +129,28 @@ const benefits = [
       <!-- Hero Content -->
       <div class="hero-content">
         <div class="hero-text">
-          <h1 class="hero-title">
-            Comunicazione <span class="highlight">Aumentativa</span> per Tutti
-          </h1>
-          <p class="hero-subtitle">
-            Una piattaforma educativa <strong>gratuita</strong> per la CAA, sviluppata dagli
-            studenti dell'IIS Volta Lodi per supportare persone con difficoltà comunicative
-            attraverso simboli e pittogrammi.
-          </p>
+          <h1 class="hero-title" v-html="t('landingPage.heroTitle').replace('Aumentativa', '<span class=\'highlight\'>Aumentativa</span>')"></h1>
+          <p class="hero-subtitle" v-html="t('landingPage.heroSubtitle').replace('GRATUITA', '<strong>GRATUITA</strong>')"></p>
 
-          <div class="free-badge">🎓 Progetto Scolastico • 100% Gratuito • No Pubblicità</div>
+          <div class="free-badge">{{ t('landingPage.freeBadge') }}</div>
 
           <div class="hero-actions">
-            <router-link to="/register" class="cta-primary"> 🚀 Accedi Gratuitamente </router-link>
-            <router-link to="/nolog" class="cta-secondary">
-              📖 Esplora Senza Registrarti
-            </router-link>
+            <router-link to="/register" class="cta-primary">{{ t('landingPage.accessFreely') }}</router-link>
+            <router-link to="/nolog" class="cta-secondary">{{ t('landingPage.exploreNoRegister') }}</router-link>
           </div>
 
           <div class="hero-stats">
             <div class="stat">
               <span class="stat-number">1000+</span>
-              <span class="stat-label">Simboli Gratuiti</span>
+              <span class="stat-label">{{ t('landingPage.stats.symbols') }}</span>
             </div>
             <div class="stat">
               <span class="stat-number">15+</span>
-              <span class="stat-label">Categorie</span>
+              <span class="stat-label">{{ t('landingPage.stats.categories') }}</span>
             </div>
             <div class="stat">
-              <span class="stat-number">0€</span>
-              <span class="stat-label">Sempre Gratis</span>
+              <span class="stat-number">{{ t('landingPage.stats.price') }}</span>
+              <span class="stat-label">{{ t('landingPage.stats.alwaysFree') }}</span>
             </div>
           </div>
         </div>
@@ -223,11 +178,8 @@ const benefits = [
     <section class="what-is-caa">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Cos'è la CAA?</h2>
-          <p class="section-subtitle">
-            La Comunicazione Aumentativa Alternativa è una metodologia che supporta le persone con
-            difficoltà comunicative
-          </p>
+          <h2 class="section-title">{{ t('landingPage.whatIsCAA.title') }}</h2>
+          <p class="section-subtitle">{{ t('landingPage.whatIsCAA.subtitle') }}</p>
         </div>
 
         <div class="caa-explanation">
@@ -235,33 +187,24 @@ const benefits = [
             <div class="caa-point">
               <div class="point-icon">🎯</div>
               <div class="point-content">
-                <h3>Per Chi?</h3>
-                <p>
-                  Persone con autismo, disabilità intellettive, disturbi del linguaggio, afasia,
-                  paralisi cerebrale e altre condizioni che limitano la comunicazione verbale.
-                </p>
+                <h3>{{ t('landingPage.whatIsCAA.forWho.title') }}</h3>
+                <p>{{ t('landingPage.whatIsCAA.forWho.description') }}</p>
               </div>
             </div>
 
             <div class="caa-point">
               <div class="point-icon">🛠️</div>
               <div class="point-content">
-                <h3>Come Funziona?</h3>
-                <p>
-                  Utilizza simboli, immagini, gesti, dispositivi tecnologici e altri strumenti per
-                  facilitare l'espressione e la comprensione.
-                </p>
+                <h3>{{ t('landingPage.whatIsCAA.howItWorks.title') }}</h3>
+                <p>{{ t('landingPage.whatIsCAA.howItWorks.description') }}</p>
               </div>
             </div>
 
             <div class="caa-point">
               <div class="point-icon">💡</div>
               <div class="point-content">
-                <h3>Perché è Importante?</h3>
-                <p>
-                  Aumenta l'autonomia, migliora le relazioni sociali e riduce la frustrazione legata
-                  alle difficoltà comunicative.
-                </p>
+                <h3>{{ t('landingPage.whatIsCAA.whyImportant.title') }}</h3>
+                <p>{{ t('landingPage.whatIsCAA.whyImportant.description') }}</p>
               </div>
             </div>
           </div>
@@ -283,17 +226,30 @@ const benefits = [
     <section class="features-section">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Funzionalità della Piattaforma</h2>
-          <p class="section-subtitle">
-            Strumenti educativi gratuiti per migliorare la comunicazione
-          </p>
+          <h2 class="section-title">{{ t('landingPage.features.title') }}</h2>
+          <p class="section-subtitle">{{ t('landingPage.features.subtitle') }}</p>
         </div>
 
         <div class="features-grid">
-          <div v-for="feature in features" :key="feature.title" class="feature-card">
-            <div class="feature-icon">{{ feature.icon }}</div>
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-description">{{ feature.description }}</p>
+          <div class="feature-card">
+            <div class="feature-icon">🗣️</div>
+            <h3 class="feature-title">{{ t('landingPage.features.facilitatedCommunication.title') }}</h3>
+            <p class="feature-description">{{ t('landingPage.features.facilitatedCommunication.description') }}</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3 class="feature-title">{{ t('landingPage.features.visualDictionary.title') }}</h3>
+            <p class="feature-description">{{ t('landingPage.features.visualDictionary.description') }}</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎮</div>
+            <h3 class="feature-title">{{ t('landingPage.features.playfulLearning.title') }}</h3>
+            <p class="feature-description">{{ t('landingPage.features.playfulLearning.description') }}</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h3 class="feature-title">{{ t('landingPage.features.progressTracking.title') }}</h3>
+            <p class="feature-description">{{ t('landingPage.features.progressTracking.description') }}</p>
           </div>
         </div>
       </div>
@@ -303,15 +259,25 @@ const benefits = [
     <section class="benefits-section">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Chi Può Beneficiarne?</h2>
-          <p class="section-subtitle">Un progetto aperto e gratuito per la comunità</p>
+          <h2 class="section-title">{{ t('landingPage.benefits.title') }}</h2>
+          <p class="section-subtitle">{{ t('landingPage.benefits.subtitle') }}</p>
         </div>
 
         <div class="benefits-grid">
-          <div v-for="benefit in benefits" :key="benefit.title" class="benefit-card">
-            <div class="benefit-icon">{{ benefit.icon }}</div>
-            <h3 class="benefit-title">{{ benefit.title }}</h3>
-            <p class="benefit-description">{{ benefit.description }}</p>
+          <div class="benefit-card">
+            <div class="benefit-icon">♿</div>
+            <h3 class="benefit-title">{{ t('landingPage.benefits.disabilities.title') }}</h3>
+            <p class="benefit-description">{{ t('landingPage.benefits.disabilities.description') }}</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">👨‍🏫</div>
+            <h3 class="benefit-title">{{ t('landingPage.benefits.educators.title') }}</h3>
+            <p class="benefit-description">{{ t('landingPage.benefits.educators.description') }}</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">👨‍👩‍👧‍👦</div>
+            <h3 class="benefit-title">{{ t('landingPage.benefits.families.title') }}</h3>
+            <p class="benefit-description">{{ t('landingPage.benefits.families.description') }}</p>
           </div>
         </div>
       </div>
@@ -322,37 +288,32 @@ const benefits = [
       <div class="container">
         <div class="about-content">
           <div class="about-text">
-            <h2 class="about-title">Un Progetto Educativo</h2>
-            <p class="about-description">
-              ComuniCAA nasce come progetto didattico degli studenti dell'<strong
-                >IIS Volta Lodi</strong
-              >
-              per supportare la comunità nell'apprendimento della Comunicazione Aumentativa
-              Alternativa.
+            <h2 class="about-title">{{ t('landingPage.about.title') }}</h2>
+            <p class="about-description" v-html="t('landingPage.about.description').replace('IIS Volta Lodi', '<strong>IIS Volta Lodi</strong>')">
             </p>
             <div class="about-features">
               <div class="about-feature">
                 <span class="about-icon">🎓</span>
-                <span>Progetto scolastico</span>
+                <span>{{ t('landingPage.about.features.schoolProject') }}</span>
               </div>
               <div class="about-feature">
                 <span class="about-icon">💝</span>
-                <span>Completamente gratuito</span>
+                <span>{{ t('landingPage.about.features.completelyFree') }}</span>
               </div>
               <div class="about-feature">
                 <span class="about-icon">🌍</span>
-                <span>Open source</span>
+                <span>{{ t('landingPage.about.features.openSource') }}</span>
               </div>
               <div class="about-feature">
                 <span class="about-icon">🚫</span>
-                <span>Senza pubblicità</span>
+                <span>{{ t('landingPage.about.features.noAds') }}</span>
               </div>
             </div>
           </div>
           <div class="about-visual">
             <div class="school-badge">
-              <h3>IIS Volta Lodi</h3>
-              <p>Innovazione per l'Accessibilità</p>
+              <h3>{{ t('landingPage.about.school.name') }}</h3>
+              <p>{{ t('landingPage.about.school.motto') }}</p>
             </div>
           </div>
         </div>
@@ -363,14 +324,11 @@ const benefits = [
     <section class="cta-section">
       <div class="container">
         <div class="cta-content">
-          <h2 class="cta-title">Inizia ad Esplorare la CAA</h2>
-          <p class="cta-description">
-            Un progetto scolastico dedicato alla comunicazione aumentativa alternativa. Creato dagli
-            studenti, per la comunità. Completamente gratuito, sempre.
-          </p>
+          <h2 class="cta-title">{{ t('landingPage.cta.title') }}</h2>
+          <p class="cta-description">{{ t('landingPage.cta.description') }}</p>
           <div class="cta-actions">
-            <router-link to="/register" class="cta-btn-primary"> Accedi Gratuitamente </router-link>
-            <router-link to="/nolog" class="cta-btn-secondary"> Esplora Subito </router-link>
+            <router-link to="/register" class="cta-btn-primary">{{ t('landingPage.cta.primary') }}</router-link>
+            <router-link to="/nolog" class="cta-btn-secondary">{{ t('landingPage.cta.secondary') }}</router-link>
           </div>
         </div>
       </div>
@@ -385,13 +343,13 @@ const benefits = [
             <span class="footer-title">ComuniCAA</span>
           </div>
           <div class="footer-links">
-            <router-link to="/credits" class="footer-link">Chi Siamo</router-link>
-            <router-link to="/login" class="footer-link">Accedi</router-link>
-            <router-link to="/register" class="footer-link">Registrati</router-link>
+            <router-link to="/credits" class="footer-link">{{ t('landingPage.footer.links.aboutUs') }}</router-link>
+            <router-link to="/login" class="footer-link">{{ t('landingPage.footer.links.login') }}</router-link>
+            <router-link to="/register" class="footer-link">{{ t('landingPage.footer.links.register') }}</router-link>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2025 ComuniCAA - Progetto educativo gratuito dell'IIS Volta Lodi</p>
+          <p>{{ t('landingPage.footer.copyright') }}</p>
         </div>
       </div>
     </footer>

@@ -32,10 +32,28 @@ const login = async () => {
     router.push('/home')
   } catch (error) {
     if (error instanceof Error) {
-      errorMessage.value = error.message
+      // Map Firebase error codes to our translation keys
+      const errorCode = error instanceof Error && 'code' in error ? error.code : 'unknown'
+      switch(errorCode) {
+        case 'auth/invalid-email':
+          errorMessage.value = t('loginPage.error.invalidEmail')
+          break
+        case 'auth/user-not-found':
+          errorMessage.value = t('loginPage.error.userNotFound')
+          break
+        case 'auth/wrong-password':
+          errorMessage.value = t('loginPage.error.wrongPassword')
+          break
+        case 'auth/too-many-requests':
+          errorMessage.value = t('loginPage.error.tooManyAttempts')
+          break
+        default:
+          errorMessage.value = t('loginPage.error.default')
+      }
       console.error('Login error:', error)
     } else {
       console.error('Unexpected error:', error)
+      errorMessage.value = t('loginPage.error.default')
     }
   } finally {
     isLoading.value = false
@@ -144,6 +162,12 @@ const toggleLanguage = () => {
               class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm placeholder-slate-400"
               :placeholder="t('loginPage.passwordPlaceholder')"
             />
+            <!-- Forgot Password Link -->
+            <div class="flex justify-end mt-2">
+              <a href="#" class="text-sm text-blue-600 hover:text-blue-700 transition-colors duration-200">
+                {{ t('loginPage.forgotPassword') }}
+              </a>
+            </div>
           </div>
 
           <!-- Error Message -->

@@ -1,8 +1,15 @@
 import { createI18n } from 'vue-i18n'
 
 const messages = {
-  // English translations (defa7ult)
+  // English translations (default)
   en: {
+    common: {
+      backToHome: 'Back to Home',
+      goBack: 'Go Back',
+      switchLanguage: 'Switch language',
+      educationalProject: 'Educational Project by IIS Volta Lodi',
+      freeToUse: 'Free to use forever',
+    },
     navbar: {
       login: 'Login',
       register: 'Register',
@@ -10,15 +17,97 @@ const messages = {
     landingPage: {
       appName: 'CAA Communication',
       appTagline: 'Connecting people, empowering communication',
-      dictionary: 'Dictionary',
-      whatIsCAA: 'What is CAA Communication?',
-      whatIsCAADescription:
-        'CAA Communication is a platform designed to enhance communication and collaboration...',
-      howItWorks: 'How the Website Works',
-      howItWorksDescription: 'Our website is built to be user-friendly and efficient...',
-      projectGoals: 'Our Project Goals',
-      projectGoalsDescription:
-        'At CAA Communication, we aim to revolutionize the way people interact...',
+      heroTitle: 'Augmentative Communication for Everyone',
+      heroSubtitle: 'A FREE educational platform for AAC, developed by IIS Volta Lodi students to support people with communication difficulties through symbols and pictograms.',
+      freeBadge: '🎓 School Project • 100% Free • No Ads',
+      exploreNoRegister: '📖 Explore Without Registration',
+      accessFreely: '🚀 Access For Free',
+      stats: {
+        symbols: '1000+ Free Symbols',
+        categories: '15+ Categories',
+        price: '0€',
+        alwaysFree: 'Always Free'
+      },
+      whatIsCAA: {
+        title: 'What is AAC?',
+        subtitle: 'Augmentative and Alternative Communication is a methodology that supports people with communication difficulties',
+        forWho: {
+          title: 'For Who?',
+          description: 'People with autism, intellectual disabilities, language disorders, aphasia, cerebral palsy, and other conditions that limit verbal communication.'
+        },
+        howItWorks: {
+          title: 'How Does it Work?',
+          description: 'Uses symbols, images, gestures, technological devices, and other tools to facilitate expression and understanding.'
+        },
+        whyImportant: {
+          title: 'Why is it Important?',
+          description: 'Increases autonomy, improves social relationships, and reduces frustration related to communication difficulties.'
+        }
+      },
+      features: {
+        title: 'Platform Features',
+        subtitle: 'Free educational tools to improve communication',
+        facilitatedCommunication: {
+          title: 'Facilitated Communication',
+          description: 'Symbols, pictograms, and tools to facilitate expression'
+        },
+        visualDictionary: {
+          title: 'Visual Dictionary',
+          description: 'Large collection of symbols organized by categories'
+        },
+        playfulLearning: {
+          title: 'Playful Learning',
+          description: 'Educational games to improve communication skills'
+        },
+        progressTracking: {
+          title: 'Progress Tracking',
+          description: 'Monitor improvements over time'
+        }
+      },
+      benefits: {
+        title: 'Who Can Benefit?',
+        subtitle: 'An open and free project for the community',
+        disabilities: {
+          title: 'For people with disabilities',
+          description: 'Free resources for those with verbal language difficulties'
+        },
+        educators: {
+          title: 'For educators and therapists',
+          description: 'Open educational tools for rehabilitation'
+        },
+        families: {
+          title: 'For families',
+          description: 'Free support to improve communication at home'
+        }
+      },
+      about: {
+        title: 'An Educational Project',
+        description: 'ComuniCAA was born as a didactic project of IIS Volta Lodi students to support the community in learning Augmentative and Alternative Communication.',
+        features: {
+          schoolProject: 'School project',
+          completelyFree: 'Completely free',
+          openSource: 'Open source',
+          noAds: 'No ads'
+        },
+        school: {
+          name: 'IIS Volta Lodi',
+          motto: 'Innovation for Accessibility'
+        }
+      },
+      cta: {
+        title: 'Start Exploring AAC',
+        description: 'A school project dedicated to augmentative alternative communication. Created by students, for the community. Completely free, always.',
+        primary: 'Access For Free',
+        secondary: 'Explore Now'
+      },
+      footer: {
+        links: {
+          aboutUs: 'About Us',
+          login: 'Login',
+          register: 'Register'
+        },
+        copyright: '© 2025 ComuniCAA - Free educational project by IIS Volta Lodi'
+      }
     },
     creditsPage: {
       poweredBy: 'Powered by IIS Volta Lodi',
@@ -47,18 +136,28 @@ const messages = {
       footerText: 'ComuniCAA. All rights reserved.',
     },
     loginPage: {
-      title: 'Login',
+      title: 'Welcome Back',
+      subtitle: 'Sign in to continue using ComuniCAA',
       emailLabel: 'Email Address',
       emailPlaceholder: 'Enter your email',
       passwordLabel: 'Password',
       passwordPlaceholder: 'Enter your password',
-      loggingIn: 'Logging in...',
-      loginButton: 'Login',
+      forgotPassword: 'Forgot your password?',
+      loggingIn: 'Signing in...',
+      loginButton: 'Sign In',
       noAccount: "Don't have an account?",
-      signUpLink: 'Sign up',
+      signUpLink: 'Sign up for free',
+      error: {
+        invalidEmail: 'Invalid email address',
+        wrongPassword: 'Incorrect password',
+        userNotFound: 'No account found with this email',
+        tooManyAttempts: 'Too many sign in attempts. Please try again later',
+        default: 'An error occurred during sign in'
+      }
     },
     registrationPage: {
       title: 'Create Your Account',
+      subtitle: 'Join our community and start communicating better',
       nameLabel: 'Full Name',
       namePlaceholder: 'Enter your full name',
       emailLabel: 'Email Address',
@@ -69,8 +168,15 @@ const messages = {
       confirmPasswordPlaceholder: 'Confirm your password',
       passwordMismatch: 'Passwords do not match',
       registerButton: 'Register',
+      registering: 'Creating your account...',
       alreadyHaveAccount: 'Already have an account?',
       loginLink: 'Login',
+      error: {
+        emailInUse: 'Email already in use',
+        invalidEmail: 'Invalid email address',
+        weakPassword: 'Password is too weak',
+        default: 'An error occurred during registration'
+      }
     },
     homePage: {
       title: 'Welcome to ComuniCAA',
@@ -277,15 +383,97 @@ const messages = {
     landingPage: {
       appName: 'Comunicazione CAA',
       appTagline: 'Collegare le persone, potenziare la comunicazione',
-      dictionary: 'Dizionario',
-      whatIsCAA: "Che cos'è la Comunicazione CAA?",
-      whatIsCAADescription:
-        'La Comunicazione CAA è una piattaforma progettata per migliorare la comunicazione...',
-      howItWorks: 'Come funziona il sito web',
-      howItWorksDescription: 'Il nostro sito è progettato per essere intuitivo ed efficiente...',
-      projectGoals: 'I nostri obiettivi',
-      projectGoalsDescription:
-        'Alla Comunicazione CAA, miriamo a rivoluzionare il modo in cui le persone interagiscono...',
+      heroTitle: 'Comunicazione Aumentativa per Tutti',
+      heroSubtitle: 'Una piattaforma educativa GRATUITA per la CAA, sviluppata dagli studenti dell\'IIS Volta Lodi per supportare persone con difficoltà comunicative attraverso simboli e pittogrammi.',
+      freeBadge: '🎓 Progetto Scolastico • 100% Gratuito • No Pubblicità',
+      exploreNoRegister: '📖 Esplora Senza Registrarti',
+      accessFreely: '🚀 Accedi Gratuitamente',
+      stats: {
+        symbols: '1000+ Simboli Gratuiti',
+        categories: '15+ Categorie',
+        price: '0€',
+        alwaysFree: 'Sempre Gratis'
+      },
+      whatIsCAA: {
+        title: 'Cos\'è la CAA?',
+        subtitle: 'La Comunicazione Aumentativa Alternativa è una metodologia che supporta le persone con difficoltà comunicative',
+        forWho: {
+          title: 'Per Chi?',
+          description: 'Persone con autismo, disabilità intellettive, disturbi del linguaggio, afasia, paralisi cerebrale e altre condizioni che limitano la comunicazione verbale.'
+        },
+        howItWorks: {
+          title: 'Come Funziona?',
+          description: 'Utilizza simboli, immagini, gesti, dispositivi tecnologici e altri strumenti per facilitare l\'espressione e la comprensione.'
+        },
+        whyImportant: {
+          title: 'Perché è Importante?',
+          description: 'Aumenta l\'autonomia, migliora le relazioni sociali e riduce la frustrazione legata alle difficoltà comunicative.'
+        }
+      },
+      features: {
+        title: 'Funzionalità della Piattaforma',
+        subtitle: 'Strumenti educativi gratuiti per migliorare la comunicazione',
+        facilitatedCommunication: {
+          title: 'Comunicazione Facilitata',
+          description: 'Simboli, pittogrammi e strumenti per facilitare l\'espressione'
+        },
+        visualDictionary: {
+          title: 'Dizionario Visivo',
+          description: 'Ampia raccolta di simboli organizzati per categorie'
+        },
+        playfulLearning: {
+          title: 'Apprendimento Ludico',
+          description: 'Giochi educativi per migliorare le competenze comunicative'
+        },
+        progressTracking: {
+          title: 'Tracciamento Progressi',
+          description: 'Monitora i miglioramenti nel tempo'
+        }
+      },
+      benefits: {
+        title: 'Chi Può Beneficiarne?',
+        subtitle: 'Un progetto aperto e gratuito per la comunità',
+        disabilities: {
+          title: 'Per persone con disabilità',
+          description: 'Risorse gratuite per chi ha difficoltà nel linguaggio verbale'
+        },
+        educators: {
+          title: 'Per educatori e terapisti',
+          description: 'Strumenti educativi aperti per la riabilitazione'
+        },
+        families: {
+          title: 'Per famiglie',
+          description: 'Supporto gratuito per migliorare la comunicazione in casa'
+        }
+      },
+      about: {
+        title: 'Un Progetto Educativo',
+        description: 'ComuniCAA nasce come progetto didattico degli studenti dell\'IIS Volta Lodi per supportare la comunità nell\'apprendimento della Comunicazione Aumentativa Alternativa.',
+        features: {
+          schoolProject: 'Progetto scolastico',
+          completelyFree: 'Completamente gratuito',
+          openSource: 'Open source',
+          noAds: 'Senza pubblicità'
+        },
+        school: {
+          name: 'IIS Volta Lodi',
+          motto: 'Innovazione per l\'Accessibilità'
+        }
+      },
+      cta: {
+        title: 'Inizia ad Esplorare la CAA',
+        description: 'Un progetto scolastico dedicato alla comunicazione aumentativa alternativa. Creato dagli studenti, per la comunità. Completamente gratuito, sempre.',
+        primary: 'Accedi Gratuitamente',
+        secondary: 'Esplora Subito'
+      },
+      footer: {
+        links: {
+          aboutUs: 'Chi Siamo',
+          login: 'Accedi',
+          register: 'Registrati'
+        },
+        copyright: '© 2025 ComuniCAA - Progetto educativo gratuito dell\'IIS Volta Lodi'
+      }
     },
     creditsPage: {
       poweredBy: 'Realizzato da IIS Volta Lodi',
@@ -314,15 +502,24 @@ const messages = {
       footerText: 'ComuniCAA. Tutti i diritti riservati.',
     },
     loginPage: {
-      title: 'Accedi',
+      title: 'Bentornato',
+      subtitle: 'Accedi per continuare a usare ComuniCAA',
       emailLabel: 'Indirizzo Email',
       emailPlaceholder: 'Inserisci la tua email',
       passwordLabel: 'Password',
       passwordPlaceholder: 'Inserisci la tua password',
+      forgotPassword: 'Password dimenticata?',
       loggingIn: 'Accesso in corso...',
       loginButton: 'Accedi',
       noAccount: 'Non hai un account?',
-      signUpLink: 'Registrati',
+      signUpLink: 'Registrati gratuitamente',
+      error: {
+        invalidEmail: 'Indirizzo email non valido',
+        wrongPassword: 'Password errata',
+        userNotFound: 'Nessun account trovato con questa email',
+        tooManyAttempts: 'Troppi tentativi di accesso. Riprova più tardi',
+        default: 'Si è verificato un errore durante l\'accesso'
+      }
     },
     registrationPage: {
       title: 'Crea il tuo account',
