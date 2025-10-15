@@ -115,7 +115,7 @@ const toggleLanguage = () => {
                   <div
                     class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl"
                   >
-                    💻
+                    👨🏻‍💻
                   </div>
                   <h3 class="text-2xl font-bold text-white mb-2">Mirko Virtuani</h3>
                   <p class="text-white/90 font-medium">Lead Developer</p>
@@ -144,6 +144,47 @@ const toggleLanguage = () => {
                     </svg>
                   </a>
                   <a
+                    href="https://instagram.com/mirko_virtuani"
+                    target="_blank"
+                    class="w-12 h-12 bg-gradient-to-r from-pink-500 to-amber-400 hover:opacity-90 text-white rounded-xl flex items-center justify-center transition-colors duration-200"
+                    aria-label="Instagram"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="2"
+                        y="2"
+                        width="20"
+                        height="20"
+                        rx="5"
+                        ry="5"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        fill="none"
+                      ></rect>
+                      <path
+                        d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        fill="none"
+                      ></path>
+                      <line
+                        x1="17.5"
+                        y1="6.5"
+                        x2="17.5"
+                        y2="6.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      ></line>
+                    </svg>
+                  </a>
+                  <a
                     href="https://it.linkedin.com/in/mirko-virtuani-09065b2b0"
                     target="_blank"
                     class="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors duration-200"
@@ -153,6 +194,82 @@ const toggleLanguage = () => {
                       <path
                         d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
                       />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paone -->
+          <div class="group">
+            <div
+              class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
+            >
+              <!-- Member header with gradient -->
+              <div
+                class="bg-gradient-to-r from-blue-500 to-indigo-600 p-8 text-center relative overflow-hidden"
+              >
+                <div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
+                <div class="relative z-10">
+                  <div
+                    class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl"
+                  >
+                    🎙️
+                  </div>
+                  <h3 class="text-2xl font-bold text-white mb-2">Tommaso Paonessa</h3>
+                  <p class="text-white/90 font-medium">Inner Speaker</p>
+                </div>
+              </div>
+
+              <!-- Member content -->
+              <div class="p-8">
+                <p class="text-slate-600 leading-relaxed mb-6">
+                  Espositore del progetto con esperienze attoriali sia in campo Teatrale che
+                  Televisivo
+                </p>
+
+                <!-- Social links -->
+                <div class="flex justify-center gap-4">
+                  <a
+                    href="https://www.instagram.com/tommaso_paonessa_"
+                    target="_blank"
+                    class="w-12 h-12 bg-gradient-to-r from-pink-500 to-amber-400 hover:opacity-90 text-white rounded-xl flex items-center justify-center transition-colors duration-200"
+                    aria-label="Instagram"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="2"
+                        y="2"
+                        width="20"
+                        height="20"
+                        rx="5"
+                        ry="5"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        fill="none"
+                      ></rect>
+                      <path
+                        d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        fill="none"
+                      ></path>
+                      <line
+                        x1="17.5"
+                        y1="6.5"
+                        x2="17.5"
+                        y2="6.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      ></line>
                     </svg>
                   </a>
                 </div>
@@ -174,7 +291,7 @@ const toggleLanguage = () => {
                   <div
                     class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl"
                   >
-                    🎨
+                    🌐
                   </div>
                   <h3 class="text-2xl font-bold text-white mb-2">Lorenzo Battista</h3>
                   <p class="text-white/90 font-medium">Lead Developer</p>
@@ -202,6 +319,7 @@ const toggleLanguage = () => {
                       />
                     </svg>
                   </a>
+
                   <a
                     href="https://linkedin.com"
                     target="_blank"
@@ -218,8 +336,6 @@ const toggleLanguage = () => {
               </div>
             </div>
           </div>
-
-          <!-- Federico -->
         </div>
       </div>
 
