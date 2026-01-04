@@ -1,6 +1,7 @@
 # 🌟 ComuniCAA
 
 Una piattaforma educativa gratuita per la Comunicazione Aumentativa Alternativa (CAA), sviluppata dagli studenti dell'IIS Volta Lodi.
+https://caa-communication.netlify.app/
 
 ## 📱 Cos'è ComuniCAA?
 
