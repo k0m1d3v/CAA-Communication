@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '@/stores/authStore'
 import { useLanguageStore } from '@/stores/languageStore'
 import BackHome from '@/components/backHome.vue'
 
@@ -13,9 +11,7 @@ interface Pictogram {
   keywords: { keyword: string }[]
 }
 
-const authStore = useAuthStore()
 const languageStore = useLanguageStore()
-const router = useRouter()
 const { t } = useI18n()
 
 const isGameActive = ref(false)
@@ -97,19 +93,6 @@ const handleKeyPress = (event: KeyboardEvent) => {
   }
 }
 
-// Auth check
-onMounted(() => {
-  authStore.initializeStore()
-  watch(
-    () => authStore.isLoading,
-    (loading) => {
-      if (!loading && !authStore.user) {
-        router.push('/login')
-      }
-    },
-    { immediate: true },
-  )
-})
 </script>
 
 <template>

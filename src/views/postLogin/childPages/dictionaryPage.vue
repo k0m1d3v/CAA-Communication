@@ -176,11 +176,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '@/stores/authStore'
-import { useLanguageStore } from '@/stores/languageStore'
 import { usePictogramStore } from '@/stores/pictogramStore'
 import BackHome from '@/components/backHome.vue'
 
@@ -193,10 +190,7 @@ interface Pictogram {
   keywords: { keyword: string }[]
 }
 
-const authStore = useAuthStore()
-const languageStore = useLanguageStore()
 const pictogramStore = usePictogramStore()
-const router = useRouter()
 const { t } = useI18n()
 
 const searchQuery = ref('')
@@ -285,15 +279,4 @@ const savePhrase = () => {
   }
 }
 
-// Auth redirect
-onMounted(() => {
-  authStore.initializeStore()
-  watch(
-    () => authStore.isLoading,
-    (loading) => {
-      if (!loading && !authStore.user) router.push('/login')
-    },
-    { immediate: true },
-  )
-})
 </script>

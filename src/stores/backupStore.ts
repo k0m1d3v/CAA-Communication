@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { auth, db } from '../firebaseConfig'
 import { doc, setDoc, getDoc, onSnapshot, serverTimestamp } from 'firebase/firestore'
+import i18n from '../i18n'
+import { notify } from '../utils/toast'
 
 export interface SavedPhrase {
   id: string
@@ -36,6 +38,7 @@ export const useBackupStore = defineStore('backup', () => {
       console.error('Errore nel salvataggio cloud:', error)
       // Aggiungi alla coda di modifiche pending se offline
       pendingChanges.value.push(phrase)
+      notify(i18n.global.t('toastNotifications.cloudSaveFailed'), 'warning')
     }
   }
 
@@ -53,6 +56,7 @@ export const useBackupStore = defineStore('backup', () => {
       }
     } catch (error) {
       console.error('Errore nel caricamento cloud:', error)
+      notify(i18n.global.t('toastNotifications.cloudLoadFailed'), 'error')
     }
 
     return []

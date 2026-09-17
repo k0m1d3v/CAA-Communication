@@ -5,25 +5,131 @@
       @click="togglePanel"
       class="accessibility-toggle"
       :aria-label="isOpen ? 'Chiudi impostazioni accessibilità' : 'Apri impostazioni accessibilità'"
+      :aria-expanded="isOpen"
     >
-      <span class="icon">♿</span>
+      <span class="icon" aria-hidden="true">♿</span>
     </button>
 
-    <!-- Pannello impostazioni (versione semplificata) -->
-    <div v-if="isOpen" class="accessibility-settings">
-      <h3 class="settings-title">Impostazioni Accessibilità</h3>
+    <!-- Pannello impostazioni -->
+    <div
+      v-if="isOpen"
+      class="accessibility-settings"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="accessibility-panel-title"
+    >
+      <h3 id="accessibility-panel-title" class="settings-title">Impostazioni Accessibilità</h3>
 
+      <!-- Dimensione testo -->
       <div class="setting-group">
-        <p class="text-gray-600 text-center">🚧 Pannello in sviluppo 🚧</p>
-        <p class="text-sm text-gray-500 text-center mt-2">
-          Le funzionalità di accessibilità saranno disponibili presto!
-        </p>
+        <span class="setting-label">Dimensione testo</span>
+        <div class="button-group">
+          <button
+            v-for="size in fontSizes"
+            :key="size.value"
+            type="button"
+            class="size-button"
+            :class="{ active: settings.fontSize === size.value }"
+            :aria-pressed="settings.fontSize === size.value"
+            @click="setFontSize(size.value)"
+          >
+            {{ size.label }}
+          </button>
+        </div>
       </div>
 
+      <!-- Toggle options -->
       <div class="setting-group">
-        <button @click="applyBasicSettings" class="preset-button w-full">
-          🎯 Applica Impostazioni Base
-        </button>
+        <div class="toggle-option">
+          <input
+            id="a11y-high-contrast"
+            type="checkbox"
+            :checked="settings.highContrast"
+            @change="toggleHighContrast"
+          />
+          <label for="a11y-high-contrast">Alto contrasto</label>
+        </div>
+        <div class="toggle-option">
+          <input
+            id="a11y-reduced-motion"
+            type="checkbox"
+            :checked="settings.reducedMotion"
+            @change="toggleReducedMotion"
+          />
+          <label for="a11y-reduced-motion">Riduci animazioni</label>
+        </div>
+        <div class="toggle-option">
+          <input
+            id="a11y-color-blind"
+            type="checkbox"
+            :checked="settings.colorBlindFriendly"
+            @change="toggleColorBlindFriendly"
+          />
+          <label for="a11y-color-blind">Palette daltonici</label>
+        </div>
+        <div class="toggle-option">
+          <input
+            id="a11y-simplified-ui"
+            type="checkbox"
+            :checked="settings.simplifiedUI"
+            @change="toggleSimplifiedUI"
+          />
+          <label for="a11y-simplified-ui">Interfaccia semplificata</label>
+        </div>
+        <div class="toggle-option">
+          <input
+            id="a11y-gesture-nav"
+            type="checkbox"
+            :checked="settings.gestureNavigation"
+            @change="toggleGestureNavigation"
+          />
+          <label for="a11y-gesture-nav">Navigazione gestuale</label>
+        </div>
+        <div class="toggle-option">
+          <input
+            id="a11y-eye-tracking"
+            type="checkbox"
+            :checked="settings.eyeTrackingMode"
+            @change="toggleEyeTrackingMode"
+          />
+          <label for="a11y-eye-tracking">Modalità eye tracking</label>
+        </div>
+      </div>
+
+      <!-- Velocità voce -->
+      <div class="setting-group">
+        <label class="setting-label" for="a11y-voice-speed">
+          Velocità voce ({{ settings.voiceSpeed.toFixed(1) }}x)
+        </label>
+        <input
+          id="a11y-voice-speed"
+          class="voice-speed-slider"
+          type="range"
+          min="0.1"
+          max="3"
+          step="0.1"
+          :value="settings.voiceSpeed"
+          @input="onVoiceSpeedInput"
+        />
+      </div>
+
+      <!-- Preset -->
+      <div class="setting-group">
+        <span class="setting-label">Preset rapidi</span>
+        <div class="preset-buttons">
+          <button type="button" class="preset-button" @click="applyPreset('visual-impairment')">
+            👁️ Ipovisione
+          </button>
+          <button type="button" class="preset-button" @click="applyPreset('motor-impairment')">
+            🖐️ Motorio
+          </button>
+          <button type="button" class="preset-button" @click="applyPreset('cognitive-support')">
+            🧠 Cognitivo
+          </button>
+          <button type="button" class="preset-button reset" @click="applyPreset('reset')">
+            ↺ Ripristina
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -31,18 +137,40 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAccessibilityStore } from '@/stores/accessibilityStore'
+import type { AccessibilitySettings } from '@/stores/accessibilityStore'
 
 const isOpen = ref(false)
+
+const accessibilityStore = useAccessibilityStore()
+const { settings } = storeToRefs(accessibilityStore)
+const {
+  setFontSize,
+  toggleHighContrast,
+  toggleReducedMotion,
+  toggleColorBlindFriendly,
+  toggleSimplifiedUI,
+  toggleGestureNavigation,
+  toggleEyeTrackingMode,
+  setVoiceSpeed,
+  applyPreset,
+} = accessibilityStore
+
+const fontSizes: { value: AccessibilitySettings['fontSize']; label: string }[] = [
+  { value: 'small', label: 'A' },
+  { value: 'medium', label: 'A' },
+  { value: 'large', label: 'A' },
+  { value: 'extra-large', label: 'A' },
+]
 
 const togglePanel = () => {
   isOpen.value = !isOpen.value
 }
 
-const applyBasicSettings = () => {
-  // Applica alcune impostazioni di base per l'accessibilità
-  document.documentElement.style.fontSize = '18px'
-  console.log('Impostazioni di accessibilità base applicate')
-  isOpen.value = false
+const onVoiceSpeedInput = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  setVoiceSpeed(Number(target.value))
 }
 </script>
 
@@ -147,6 +275,19 @@ const applyBasicSettings = () => {
   transition: all 0.2s ease;
 }
 
+.size-button:nth-child(1) {
+  font-size: 12px;
+}
+.size-button:nth-child(2) {
+  font-size: 14px;
+}
+.size-button:nth-child(3) {
+  font-size: 16px;
+}
+.size-button:nth-child(4) {
+  font-size: 18px;
+}
+
 .size-button:hover {
   border-color: #3b82f6;
   color: #3b82f6;
@@ -169,6 +310,7 @@ const applyBasicSettings = () => {
   width: 18px;
   height: 18px;
   accent-color: #3b82f6;
+  flex-shrink: 0;
 }
 
 .toggle-option label {

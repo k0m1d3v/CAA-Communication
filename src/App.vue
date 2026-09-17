@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import HelpNavigator from './components/helpNavigator.vue'
 import ToastNotifications from './components/toastNotifications.vue'
+import AccessibilityPanel from './components/AccessibilityPanel.vue'
 import './assets/main.css'
 import './assets/accessibility.css'
 </script>
@@ -13,6 +14,7 @@ import './assets/accessibility.css'
     <!-- Global components -->
     <HelpNavigator />
     <ToastNotifications />
+    <AccessibilityPanel />
   </div>
 </template>
 

@@ -1,31 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from '../../stores/authStore'
-import { onMounted, watch, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NavigationCard from '../../components/navigationCard.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
-const router = useRouter()
-
-onMounted(() => {
-  authStore.initializeStore()
-
-  // Wait for `isLoading` to become `false` before checking `user`
-  watch(
-    () => authStore.isLoading,
-    (loading) => {
-      if (!loading) {
-        if (!authStore.user) {
-          console.warn('No user found, redirecting to login...')
-          router.push('/login')
-        }
-      }
-    },
-    { immediate: true },
-  )
-})
 
 // Navigation cards SEMPLIFICATA - solo 4 opzioni principali
 const cards = computed(() => [

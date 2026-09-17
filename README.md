@@ -106,6 +106,20 @@ Siamo aperti a contributi! Se vuoi partecipare al progetto:
 - Nessuna pubblicità
 - Protezione dati sensibili
 
+### Regole di sicurezza Firestore
+
+Le regole di accesso al database sono versionate in [`firestore.rules`](./firestore.rules)
+(ogni utente può leggere/scrivere solo i propri dati). Il file **non** viene
+applicato automaticamente al push: va distribuito manualmente con la
+[Firebase CLI](https://firebase.google.com/docs/cli):
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+oppure incollato nella console Firebase, sezione Firestore Database > Regole,
+del progetto configurato nel tuo `.env`.
+
 ## 📄 Licenza
 
 Questo progetto è open source, sviluppato dagli studenti dell'IIS Volta Lodi.

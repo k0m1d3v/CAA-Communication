@@ -1,0 +1,38 @@
+rules_version = '2';
+
+// Security rules for the ComuniCAA Firestore database.
+//
+// These rules are NOT deployed automatically by pushing this file — they
+// must be applied manually with either:
+//   firebase deploy --only firestore:rules
+// or by pasting this file's contents into the Firebase console under
+// Firestore Database > Rules for the project referenced in your .env.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Each user's own document and their saved phrases: only that
+    // authenticated user may read or write it.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /phrases/{phraseId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Usage analytics events: a user may create their own events and read
+    // events they own (used by analyticsStore's progress reports), but
+    // never edit or delete history after the fact.
+    match /analytics/{eventId} {
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.userId;
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+      allow update, delete: if false;
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

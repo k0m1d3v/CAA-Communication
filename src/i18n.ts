@@ -371,6 +371,8 @@ const messages = {
       warning: 'Warning!',
       info: 'Information',
       close: 'Close',
+      cloudSaveFailed: 'Phrase saved on this device, but cloud sync failed. It may be lost if you clear your browser data.',
+      cloudLoadFailed: 'Could not load your saved phrases from the cloud. Showing what is available locally.',
     },
   },
 
@@ -730,6 +732,8 @@ const messages = {
       warning: 'Attenzione!',
       info: 'Informazione',
       close: 'Chiudi',
+      cloudSaveFailed: 'Frase salvata su questo dispositivo, ma la sincronizzazione cloud è fallita. Potrebbe andare persa se cancelli i dati del browser.',
+      cloudLoadFailed: 'Impossibile caricare le frasi salvate dal cloud. Vengono mostrate solo quelle disponibili localmente.',
     },
   },
 }

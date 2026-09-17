@@ -1,30 +1,7 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { onMounted, watch } from 'vue'
-import { useAuthStore } from '../../../stores/authStore'
 import NavigationCard from '../../../components/navigationCard.vue'
 
 import BackHome from '../../../components/backHome.vue'
-
-const authStore = useAuthStore()
-const router = useRouter()
-
-onMounted(() => {
-  authStore.initializeStore()
-
-  watch(
-    () => authStore.isLoading,
-    (loading) => {
-      if (!loading) {
-        if (!authStore.user) {
-          console.warn('Nessun utente trovato, reindirizzamento al login...')
-          router.push('/login')
-        }
-      }
-    },
-    { immediate: true },
-  )
-})
 
 const cards = [{ text: 'Impara', icon: 'parliamoIcon.png', route: '/impara', color: '#ffdd57' }]
 </script>
