@@ -1,6 +1,6 @@
 <template>
   <div class="text-center mt-5">
-    <h1 class="text-6xl font-bold text-black cursor-default">{{ title }}</h1>
+    <h1 class="text-display font-bold text-ink cursor-default">{{ title }}</h1>
   </div>
 </template>
 

@@ -1,172 +1,97 @@
 @import 'tailwindcss';
+@import './tokens.css';
 @import './accessibility.css';
 
+@theme {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-edge: var(--border);
+  --color-action: var(--action);
+  --color-action-tint: var(--action-tint);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --radius-card: var(--radius-md);
+  --font-sans: var(--font-ui);
+  --font-display: var(--font-display);
+  --text-label: 1rem;
+  --text-body: 1.125rem;
+  --text-body-lg: 1.25rem;
+  --text-h3: 1.5rem;
+  --text-h2: 2rem;
+  --text-display: 2.75rem;
+}
+
+/* --- reset app --- */
 body {
-  background-color: #fcffa1;
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  text-wrap: pretty;
 }
-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 800;
-  border: none;
-  border-radius: 0.5rem;
+
+/* un solo bottone base: elimina .tasto/.login/.register/.loginCredits/.registerCredits */
+button, .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--target); padding: 0 var(--space-6);
+  font: inherit; font-weight: 700;
+  border: var(--border-w) solid transparent; border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color var(--motion-fast), border-color var(--motion-fast),
+              color var(--motion-fast);   /* mai "all", mai transform */
 }
-
-button.tasto {
-  background-color: #ffffff;
-  color: #5a8dc4;
-  border: 2px solid #5a8dc4;
-}
-
-button.tasto:hover {
-  background-color: #f0f4fa;
-}
-
-button.tasto:focus {
-  outline: 2px solid #5a8dc4;
-  outline-offset: 2px;
-}
-
-button.login {
-  background: none; /* Rimuove il colore di sfondo */
-  border: none; /* Rimuove il bordo */
-  color: inherit;
-}
-button.login:hover {
-  background-color: #0b5a9e;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-button.login:focus {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
-button.register {
-  background: none; /* Rimuove il colore di sfondo */
-  border: none; /* Rimuove il bordo */
-  color: inherit;
-}
-
-button.register:hover {
-  background-color: #0b5a9e;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-button.register:focus {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-/*Credits page buttons*/
-button.loginCredits {
-  background: none; /* Rimuove il colore di sfondo */
-  border: none; /* Rimuove il bordo */
-  color: inherit;
-}
-button.loginCredits:hover {
-  background-color: #0b5a9e;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-button.loginCredits:focus {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
-button.registerCredits {
-  background: none; /* Rimuove il colore di sfondo */
-  border: none; /* Rimuove il bordo */
-  color: inherit;
-}
-
-button.registerCredits:hover {
-  background-color: #0b5a9e;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-button.registerCredits:focus {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-/* Buttons position */
-.absolute {
-  position: absolute;
-}
-
-.top-4 {
-  top: 1rem;
-}
-
-.left-4 {
-  left: 1rem;
-}
-
-/* Disabled button */
-button:disabled {
-  background-color: #cccccc;
-  color: #666666;
+.btn-primary   { background: var(--action); color: #FFFFFF; border-color: var(--action); }
+.btn-primary:hover  { background: var(--action-hover); border-color: var(--action-hover); }
+.btn-primary:active { background: var(--action-press); border-color: var(--action-press); }
+.btn-secondary { background: var(--surface); color: var(--action); border-color: var(--action); }
+.btn-secondary:hover { background: var(--action-tint); }
+.btn-danger    { background: var(--surface); color: var(--danger); border-color: var(--danger); }
+.btn-danger:hover    { background: var(--danger-tint); }
+button:disabled, .btn[aria-disabled='true'] {
+  background: var(--surface-sunken); color: var(--ink-soft);
+  border-style: dashed; border-color: var(--border);   /* non solo colore */
   cursor: not-allowed;
-  border: none;
 }
 
-/* Title animation*/
-@keyframes bounce-letter {
-  0% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-15px);
-  }
-  60% {
-    transform: translateY(5px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+/* card / pannello: il bordo sostituisce l'ombra */
+.surface-card {
+  background: var(--surface); border: var(--border-w) solid var(--border);
+  border-radius: var(--radius-md); padding: var(--space-4);
+  box-shadow: none;
 }
 
-.rainbow-bounce {
-  display: inline-block;
-  animation: bounce-letter 0.6s ease-out;
-  animation-fill-mode: both;
-  animation-delay: 0ms;
-  font-weight: 600; /* più leggero */
-  color: rgb(255, 255, 255); /* o qualsiasi altro colore */
+/* categoria: tinta + bordo + inchiostro (mai testo bianco sul pastello) */
+.cat-tile {
+  background: var(--tint, var(--cat-other));
+  border: var(--border-w) solid var(--edge, var(--cat-other-edge));
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  min-height: 15rem;
 }
 
-.delay-100 {
-  animation-delay: 100ms;
+/* piastrella pittogramma: bianca in ogni tema */
+.pictogram-tile {
+  background: var(--pictogram-tile);
+  border: var(--border-w) solid var(--pictogram-tile-edge);
+  border-radius: var(--radius-md);
+  min-width: var(--tile); min-height: var(--tile);
 }
-.delay-200 {
-  animation-delay: 200ms;
+.pictogram-tile[aria-selected='true'] { border-width: 4px; border-color: var(--action); }
+
+/* focus unico, solo dove serve, a due toni */
+:where(a, button, input, select, textarea, [tabindex], [role='button']):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--focus-halo);
 }
-.delay-300 {
-  animation-delay: 300ms;
-}
-.delay-400 {
-  animation-delay: 400ms;
-}
-.delay-500 {
-  animation-delay: 500ms;
-}
-.delay-600 {
-  animation-delay: 600ms;
-}
-.delay-700 {
-  animation-delay: 700ms;
-}
-.delay-800 {
-  animation-delay: 800ms;
-}
-.delay-900 {
-  animation-delay: 900ms;
-}
-.delay-\[1000ms\] {
-  animation-delay: 1000ms;
-}
-.delay-\[1100ms\] {
-  animation-delay: 1100ms;
+
+/* motion ridotto è il default rispettato, non un'opzione */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

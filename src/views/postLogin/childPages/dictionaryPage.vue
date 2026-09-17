@@ -1,75 +1,57 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+  <div class="min-h-screen bg-canvas">
     <BackHome />
 
     <!-- Header -->
     <div class="container mx-auto px-4 pt-16 pb-8">
-      <div class="text-center mb-8">
-        <div
-          class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4"
-        >
-          <span class="text-2xl">📖</span>
-        </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">
+      <div class="text-center mb-6">
+        <h1 class="text-display font-bold text-ink">
           {{ t('dictionaryPage.title') }}
         </h1>
-        <p class="text-lg text-gray-600">
+        <p class="text-body-lg text-ink-soft">
           {{ t('dictionaryPage.subtitle') }}
         </p>
       </div>
 
       <!-- Search Section -->
       <div class="max-w-2xl mx-auto mb-8">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+        <div class="surface-card">
           <!-- Language selector for search -->
           <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <span class="block font-bold mb-2 text-ink">
               {{ t('dictionaryPage.searchLanguage') }}
-            </label>
-            <div class="flex gap-3">
+            </span>
+            <div class="flex flex-wrap gap-2" role="group" :aria-label="t('dictionaryPage.searchLanguage')">
               <button
+                type="button"
                 @click="setSearchLanguage('it')"
-                :class="[
-                  'px-4 py-2 rounded-lg font-medium transition-colors',
-                  searchLanguage === 'it'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                ]"
+                :class="searchLanguage === 'it' ? 'btn-primary' : 'btn-secondary'"
+                :aria-pressed="searchLanguage === 'it'"
               >
-                🇮🇹 Italiano
+                Italiano
               </button>
               <button
+                type="button"
                 @click="setSearchLanguage('en')"
-                :class="[
-                  'px-4 py-2 rounded-lg font-medium transition-colors',
-                  searchLanguage === 'en'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                ]"
+                :class="searchLanguage === 'en' ? 'btn-primary' : 'btn-secondary'"
+                :aria-pressed="searchLanguage === 'en'"
               >
-                🇺🇸 English
+                English
               </button>
               <button
+                type="button"
                 @click="setSearchLanguage('both')"
-                :class="[
-                  'px-4 py-2 rounded-lg font-medium transition-colors',
-                  searchLanguage === 'both'
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                ]"
+                :class="searchLanguage === 'both' ? 'btn-primary' : 'btn-secondary'"
+                :aria-pressed="searchLanguage === 'both'"
               >
-                🌍 {{ t('dictionaryPage.bothLanguages') }}
+                {{ t('dictionaryPage.bothLanguages') }}
               </button>
             </div>
           </div>
 
-          <SearchBar
-            v-model="searchQuery"
-            :placeholder="t('dictionaryPage.searchPlaceholder')"
-            class="w-full"
-          />
+          <SearchBar v-model="searchQuery" class="w-full" />
 
-          <div v-if="searchQuery && pictograms.length === 0" class="text-center mt-4 text-gray-500">
+          <div v-if="searchQuery && pictograms.length === 0" class="text-center mt-4 text-ink-soft">
             {{ t('dictionaryPage.noResults') }}
           </div>
         </div>
@@ -77,40 +59,37 @@
 
       <!-- Results Grid -->
       <div v-if="pictograms.length > 0" class="mb-8">
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 max-w-7xl mx-auto"
-        >
-          <NavigationCard
+        <div class="pictogram-grid max-w-7xl mx-auto">
+          <button
             v-for="pictogram in pictograms"
             :key="pictogram._id"
-            :text="pictogram.keywords[0]?.keyword || t('dictionaryPage.noTitle')"
-            :icon="computedIconUrl(pictogram)"
-            class="h-48 transform hover:scale-105 transition-transform duration-200"
-            :card-height="'192px'"
-            :border-radius="'16px'"
-            :show-divider="true"
-            :addable="true"
-            @add="pictogramStore.addPictogram(pictogram._id)"
-          />
+            type="button"
+            class="pictogram-tile pictogram-grid-item"
+            :aria-selected="pictogramStore.selectedPictograms.includes(String(pictogram._id))"
+            @click="toggleSelected(pictogram._id)"
+          >
+            <img
+              :src="computedIconUrl(pictogram)"
+              alt=""
+              class="pictogram-grid-img"
+              @error="onImgError"
+            />
+            <span class="pictogram-grid-label">
+              {{ pictogram.keywords[0]?.keyword || t('dictionaryPage.noTitle') }}
+            </span>
+          </button>
         </div>
       </div>
 
       <!-- Selected Pictograms Section -->
       <div v-if="pictogramStore.selectedPictograms.length > 0" class="max-w-6xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-          <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center space-x-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center"
-              >
-                <span class="text-lg">💬</span>
-              </div>
-              <h2 class="text-xl font-bold text-gray-800">
-                {{ t('dictionaryPage.SelectedPictogram') }}
-              </h2>
-            </div>
+        <div class="surface-card selected-panel">
+          <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+            <h2 class="text-h3 font-bold text-ink">
+              {{ t('dictionaryPage.SelectedPictogram') }}
+            </h2>
 
-            <div class="text-sm text-gray-500">
+            <div class="text-ink-soft">
               {{ pictogramStore.selectedPictograms.length }}
               {{
                 pictogramStore.selectedPictograms.length === 1
@@ -121,35 +100,24 @@
           </div>
 
           <!-- Selected Pictograms Grid -->
-          <div
-            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mb-6"
-          >
+          <div class="pictogram-grid mb-6">
             <SelectedPictogram
               v-for="id in pictogramStore.selectedPictograms"
               :key="id"
               :id="id"
               :pictograms="pictograms"
               @remove="removePictogram(id)"
-              class="transform hover:scale-105 transition-transform duration-200"
             />
           </div>
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <button
-              @click="savePhrase"
-              class="flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              <span>💾</span>
-              <span>{{ t('dictionaryPage.saveButton') }}</span>
+            <button type="button" class="btn-primary" @click="savePhrase">
+              {{ t('dictionaryPage.saveButton') }}
             </button>
 
-            <button
-              @click="clearSelectedPictograms"
-              class="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              <span>🗑️</span>
-              <span>{{ t('dictionaryPage.clearButton') }}</span>
+            <button type="button" class="btn-danger" @click="clearSelectedPictograms">
+              {{ t('dictionaryPage.clearButton') }}
             </button>
           </div>
         </div>
@@ -157,16 +125,11 @@
 
       <!-- Empty State -->
       <div v-if="!searchQuery && pictograms.length === 0" class="text-center max-w-2xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-12">
-          <div
-            class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <span class="text-3xl">🔍</span>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">
+        <div class="surface-card empty-state">
+          <h3 class="text-h3 font-bold mb-4 text-ink">
             {{ t('dictionaryPage.emptyStateTitle') }}
           </h3>
-          <p class="text-gray-600">
+          <p class="text-ink-soft">
             {{ t('dictionaryPage.emptyStateDescription') }}
           </p>
         </div>
@@ -182,8 +145,8 @@ import { usePictogramStore } from '@/stores/pictogramStore'
 import BackHome from '@/components/backHome.vue'
 
 import SearchBar from '@/components/searchBar.vue'
-import NavigationCard from '@/components/navigationCard.vue'
 import SelectedPictogram from '@/components/selectedPictogram.vue'
+import fallbackIcon from '@/assets/icons/undefined.png'
 
 interface Pictogram {
   _id: string
@@ -209,9 +172,11 @@ const setSearchLanguage = (lang: 'it' | 'en' | 'both') => {
 
 // Costruisce l’URL dell’icona
 const computedIconUrl = (p: Pictogram) =>
-  p._id
-    ? `https://static.arasaac.org/pictograms/${p._id}/${p._id}_300.png`
-    : 'https://via.placeholder.com/300'
+  p._id ? `https://static.arasaac.org/pictograms/${p._id}/${p._id}_300.png` : fallbackIcon
+
+const onImgError = (event: Event) => {
+  ;(event.target as HTMLImageElement).src = fallbackIcon
+}
 
 // Fetch API with multi-language support
 const fetchPictograms = async (query: string) => {
@@ -261,6 +226,16 @@ watch(searchQuery, (q) => {
   }
 })
 
+// Aggiungi/rimuovi dalla frase in costruzione
+const toggleSelected = (id: string) => {
+  const stringId = String(id)
+  if (pictogramStore.selectedPictograms.includes(stringId)) {
+    pictogramStore.removePictogram(stringId)
+  } else {
+    pictogramStore.addPictogram(stringId)
+  }
+}
+
 // Rimuovi singolo
 const removePictogram = (id: string) => {
   pictogramStore.removePictogram(id)
@@ -278,5 +253,42 @@ const savePhrase = () => {
     pictogramStore.saveCurrentPhrase(name.trim())
   }
 }
-
 </script>
+
+<style scoped>
+.selected-panel {
+  background: var(--surface-sunken);
+}
+
+.empty-state {
+  padding: var(--space-8);
+}
+
+.pictogram-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--tile), 1fr));
+  gap: var(--space-2);
+}
+
+.pictogram-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+}
+
+.pictogram-grid-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.pictogram-grid-label {
+  font-size: var(--text-label);
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+}
+</style>

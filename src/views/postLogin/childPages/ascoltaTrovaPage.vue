@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLanguageStore } from '@/stores/languageStore'
 import BackHome from '@/components/backHome.vue'
-
 import PageTitle from '@/components/pageTitle.vue'
 
 interface Pictogram {
@@ -26,6 +25,7 @@ const currentPictogram = ref<Pictogram | null>(null)
 const options = ref<Choice[]>([])
 const selectedOptionId = ref<string | null>(null)
 const isAnswered = ref(false)
+const isSpeaking = ref(false)
 const feedback = ref('')
 const feedbackType = ref<'success' | 'error' | 'info'>('info')
 const isLoading = ref(false)
@@ -41,21 +41,42 @@ const clearAdvanceTimeout = () => {
   }
 }
 
+const speakCurrentWord = () => {
+  if (!currentPictogram.value || !('speechSynthesis' in window)) return
+
+  const word = keywordOf(currentPictogram.value)
+  if (!word) return
+
+  window.speechSynthesis.cancel()
+  const utterance = new SpeechSynthesisUtterance(word)
+  utterance.lang = languageStore.language === 'it' ? 'it-IT' : 'en-US'
+  utterance.rate = 0.85
+  utterance.onstart = () => {
+    isSpeaking.value = true
+  }
+  utterance.onend = () => {
+    isSpeaking.value = false
+  }
+  window.speechSynthesis.speak(utterance)
+}
+
 const resetGame = () => {
   clearAdvanceTimeout()
+  window.speechSynthesis?.cancel()
   isGameActive.value = false
   currentPictogram.value = null
   options.value = []
   selectedOptionId.value = null
   isAnswered.value = false
+  isSpeaking.value = false
   feedback.value = ''
   feedbackType.value = 'info'
   isLoading.value = false
 }
 
-// Pesca un pittogramma corretto + 3 pittogrammi "distrattori" dallo stesso
-// set di dati già scaricato dall'API, invece di fare una chiamata a parte
-// per ogni opzione: un'unica fetch alimenta l'intera domanda.
+// Stesso principio di imparaPage: un'unica chiamata all'API scarica tutto il
+// set di pittogrammi, da cui peschiamo sia la risposta corretta sia i
+// distrattori, invece di fare una richiesta per ogni opzione.
 const buildRound = (pool: Pictogram[]) => {
   const withKeyword = pool.filter((p) => keywordOf(p))
   if (withKeyword.length === 0) return null
@@ -68,8 +89,6 @@ const buildRound = (pool: Pictogram[]) => {
   const usedKeywords = new Set([correctKeyword])
   const remaining = withKeyword.filter((_, i) => i !== correctIndex)
 
-  // Shuffle-and-pick: scorre l'elenco in ordine casuale finché non trova
-  // abbastanza distrattori con una parola diversa dalla risposta corretta.
   for (const candidate of remaining.sort(() => Math.random() - 0.5)) {
     if (distractors.length >= OPTION_COUNT - 1) break
     const kw = keywordOf(candidate).toLowerCase()
@@ -87,7 +106,9 @@ const buildRound = (pool: Pictogram[]) => {
   return { correct, choices }
 }
 
-const fetchRandomPictogram = async () => {
+const pictogramImg = (id: string) => `https://static.arasaac.org/pictograms/${id}/${id}_300.png`
+
+const fetchRound = async () => {
   clearAdvanceTimeout()
   isLoading.value = true
   feedback.value = ''
@@ -106,13 +127,14 @@ const fetchRandomPictogram = async () => {
     if (round) {
       currentPictogram.value = round.correct
       options.value = round.choices
+      speakCurrentWord()
     } else {
-      feedback.value = t('imparaPage.noDataFound')
+      feedback.value = t('ascoltaTrovaPage.noDataFound')
       feedbackType.value = 'error'
     }
   } catch (error) {
     console.error('Error fetching pictogram:', error)
-    feedback.value = t('imparaPage.loadError')
+    feedback.value = t('ascoltaTrovaPage.loadError')
     feedbackType.value = 'error'
   } finally {
     isLoading.value = false
@@ -122,7 +144,7 @@ const fetchRandomPictogram = async () => {
 const startGame = async () => {
   isGameActive.value = true
   score.value = 0
-  await fetchRandomPictogram()
+  await fetchRound()
 }
 
 const choose = (choice: Choice) => {
@@ -132,20 +154,25 @@ const choose = (choice: Choice) => {
   selectedOptionId.value = choice.id
 
   if (choice.id === currentPictogram.value._id) {
-    feedback.value = t('imparaPage.correct')
+    feedback.value = t('ascoltaTrovaPage.correct')
     feedbackType.value = 'success'
     score.value++
   } else {
-    feedback.value = t('imparaPage.incorrect')
+    feedback.value = t('ascoltaTrovaPage.incorrect', {
+      word: keywordOf(currentPictogram.value),
+    })
     feedbackType.value = 'error'
   }
 
-  // Prossima domanda dopo un breve delay, per lasciar vedere la risposta
-  // corretta evidenziata anche quando si sbaglia.
   advanceTimeout = window.setTimeout(() => {
-    fetchRandomPictogram()
+    fetchRound()
   }, 1800)
 }
+
+onUnmounted(() => {
+  clearAdvanceTimeout()
+  window.speechSynthesis?.cancel()
+})
 </script>
 
 <template>
@@ -155,79 +182,72 @@ const choose = (choice: Choice) => {
     <!-- Header -->
     <div class="container mx-auto px-4 pt-16 pb-8">
       <div class="text-center mb-8">
-        <PageTitle title="Impara" />
+        <PageTitle title="Ascolta e Trova" />
         <p class="text-body-lg text-ink-soft mt-4">
-          {{ t('imparaPage.subtitle') }}
+          {{ t('ascoltaTrovaPage.subtitle') }}
         </p>
       </div>
 
       <!-- Game Interface -->
       <div v-if="!isGameActive" class="max-w-2xl mx-auto">
-        <!-- Welcome Card -->
         <div class="surface-card text-center" style="padding: var(--space-8)">
           <h2 class="text-h2 font-bold text-ink mb-4">
-            {{ t('imparaPage.welcomeTitle') }}
+            {{ t('ascoltaTrovaPage.welcomeTitle') }}
           </h2>
 
           <p class="text-ink-soft mb-8">
-            {{ t('imparaPage.welcomeDescription') }}
+            {{ t('ascoltaTrovaPage.welcomeDescription') }}
           </p>
 
           <button type="button" class="btn-primary" @click="startGame">
-            {{ t('imparaPage.startButton') }}
+            {{ t('ascoltaTrovaPage.startButton') }}
           </button>
         </div>
       </div>
 
       <!-- Active Game -->
       <div v-else class="max-w-2xl mx-auto">
-        <!-- Score Display -->
         <div class="surface-card text-center mb-6 score-card">
           <span class="text-h3 font-bold text-ink">
-            {{ t('imparaPage.score') }}: {{ score }}
+            {{ t('ascoltaTrovaPage.score') }}: {{ score }}
           </span>
         </div>
 
-        <!-- Game Card -->
         <div class="surface-card" style="padding: var(--space-8)">
-          <!-- Loading State -->
           <div v-if="isLoading" class="text-center py-12">
-            <p class="text-ink-soft">{{ t('imparaPage.loading') }}</p>
+            <p class="text-ink-soft">{{ t('ascoltaTrovaPage.loading') }}</p>
           </div>
 
-          <!-- Game Content -->
           <div v-else-if="currentPictogram" class="text-center">
-            <!-- Pictogram Image -->
-            <div class="pictogram-tile learn-tile mb-8">
-              <img
-                :src="`https://static.arasaac.org/pictograms/${currentPictogram._id}/${currentPictogram._id}_500.png`"
-                :alt="t('imparaPage.pictogramAlt')"
-                class="learn-tile-img"
-                @error="fetchRandomPictogram"
-              />
-            </div>
+            <!-- Listen control -->
+            <button
+              type="button"
+              class="btn-primary listen-button mb-8"
+              :disabled="isSpeaking"
+              @click="speakCurrentWord"
+            >
+              {{ isSpeaking ? t('ascoltaTrovaPage.speaking') : t('ascoltaTrovaPage.listenAgain') }}
+            </button>
 
-            <!-- Choices -->
-            <div class="max-w-md mx-auto">
-              <p class="font-bold text-ink mb-2" id="guess-prompt">
-                {{ t('imparaPage.guessPrompt') }}
-              </p>
-              <div class="choice-grid" role="group" aria-labelledby="guess-prompt">
-                <button
-                  v-for="choice in options"
-                  :key="choice.id"
-                  type="button"
-                  class="btn-secondary choice-button"
-                  :class="{
-                    'choice-correct': isAnswered && choice.id === currentPictogram._id,
-                    'choice-wrong': isAnswered && choice.id === selectedOptionId && choice.id !== currentPictogram._id,
-                  }"
-                  :aria-disabled="isAnswered"
-                  @click="choose(choice)"
-                >
-                  {{ choice.label }}
-                </button>
-              </div>
+            <!-- Choices: pittogrammi soli, senza etichetta — l'abbinamento
+                 deve passare dall'ascolto, non dalla lettura del testo. -->
+            <div class="choice-image-grid">
+              <button
+                v-for="choice in options"
+                :key="choice.id"
+                type="button"
+                class="pictogram-tile choice-tile"
+                :class="{
+                  'choice-correct': isAnswered && choice.id === currentPictogram._id,
+                  'choice-wrong': isAnswered && choice.id === selectedOptionId && choice.id !== currentPictogram._id,
+                }"
+                :aria-disabled="isAnswered"
+                :aria-label="isAnswered ? choice.label : t('ascoltaTrovaPage.optionAriaLabel')"
+                @click="choose(choice)"
+              >
+                <img :src="pictogramImg(choice.id)" alt="" class="choice-tile-img" />
+                <span v-if="isAnswered" class="choice-tile-label">{{ choice.label }}</span>
+              </button>
             </div>
 
             <!-- Feedback -->
@@ -242,12 +262,12 @@ const choose = (choice: Choice) => {
 
             <!-- Game Controls -->
             <div class="mt-8 flex justify-center gap-4">
-              <button type="button" class="btn-secondary" @click="fetchRandomPictogram">
-                {{ t('imparaPage.skipButton') }}
+              <button type="button" class="btn-secondary" @click="fetchRound">
+                {{ t('ascoltaTrovaPage.skipButton') }}
               </button>
 
               <button type="button" class="btn-danger" @click="resetGame">
-                {{ t('imparaPage.quitButton') }}
+                {{ t('ascoltaTrovaPage.quitButton') }}
               </button>
             </div>
           </div>
@@ -262,52 +282,56 @@ const choose = (choice: Choice) => {
   padding: var(--space-4);
 }
 
-.learn-tile {
-  width: 100%;
-  max-width: 20rem;
-  height: 16rem;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.listen-button {
+  min-height: var(--target-lg);
+  padding: 0 var(--space-8);
+  font-size: var(--text-h3);
 }
 
-.learn-tile-img {
-  max-width: 100%;
-  max-height: 100%;
+.choice-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.choice-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  aspect-ratio: 1;
+}
+
+.choice-tile-img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-.choice-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-2);
+.choice-tile-label {
+  font-size: var(--text-label);
+  font-weight: 700;
+  color: var(--ink);
 }
 
-.choice-button {
-  width: 100%;
-}
-
-.choice-button[aria-disabled='true'] {
+.choice-tile[aria-disabled='true'] {
   cursor: default;
 }
 
 .choice-correct {
-  background: var(--success-tint);
   border-color: var(--success);
-  color: var(--ink);
+  border-width: 4px;
+  background: var(--success-tint);
 }
 
 .choice-wrong {
-  background: var(--danger-tint);
   border-color: var(--danger);
-  color: var(--ink);
-}
-
-@media (max-width: 480px) {
-  .choice-grid {
-    grid-template-columns: 1fr;
-  }
+  border-width: 4px;
+  background: var(--danger-tint);
 }
 
 .feedback-box {
@@ -334,5 +358,12 @@ const choose = (choice: Choice) => {
   background: var(--action-tint);
   border-left-color: var(--action);
   color: var(--ink);
+}
+
+@media (max-width: 480px) {
+  .choice-image-grid {
+    grid-template-columns: 1fr 1fr;
+    max-width: 20rem;
+  }
 }
 </style>

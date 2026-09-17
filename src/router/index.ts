@@ -21,6 +21,8 @@ import StorytellerPage from '../views/postLogin/childPages/StorytellerPage.vue'
 import NologPage from '@/views/postLogin/childPages/NologPage.vue'
 import ImparaPage from '@/views/postLogin/childPages/imparaPage.vue'
 import RisposteRapide from '@/views/postLogin/childPages/risposteRapidePage.vue'
+import AscoltaTrovaPage from '@/views/postLogin/childPages/ascoltaTrovaPage.vue'
+import MemoryPage from '@/views/postLogin/childPages/memoryPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -113,9 +115,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/analytics',
-      name: 'Analytics',
-      component: () => import('../views/postLogin/childPages/AnalyticsPage.vue'),
+      path: '/ascolta-trova',
+      name: 'AscoltaTrova',
+      component: AscoltaTrovaPage,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/memory',
+      name: 'Memory',
+      component: MemoryPage,
       meta: { requiresAuth: true },
     },
   ],

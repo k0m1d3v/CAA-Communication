@@ -1,38 +1,18 @@
 <template>
-  <div
-    class="flex flex-col items-center justify-between cursor-pointer transition-all duration-300 hover:scale-102"
+  <component
+    :is="route ? 'RouterLink' : 'button'"
+    :to="route ? route : undefined"
+    class="nav-card cat-tile"
     :style="{
-      backgroundColor: color,
-      width: cardWidth,
-      height: cardHeight,
-      borderRadius: borderRadius,
-      boxShadow: 'none',
-      border: 'none',
+      '--tint': `var(--cat-${category})`,
+      '--edge': `var(--cat-${category}-edge)`,
+      minHeight: cardHeight,
     }"
-    @click="navigate"
+    :data-category="category"
   >
-    <div
-      class="text-center text-3xl font-bold mt-4"
-      :class="{ 'text-white': color !== '#ffffff', 'text-gray-800': color === '#ffffff' }"
-      :style="{
-        textShadow: color === '#ffffff' ? 'none' : '1px 1px 3px rgba(0, 0, 0, 0.8)'
-      }"
-    >
-      {{ text }}
-    </div>
-
-    <!-- Background overlay for white cards -->
-    <div v-if="color === '#ffffff'" class="absolute top-0 left-0 right-0 rounded-t-[16px] h-16 bg-gradient-to-b from-gray-100 to-transparent"></div>
-
-    <!-- Image Section -->
-    <div class="mt-4 flex items-center gap-2">
+    <div class="nav-card-icon pictogram-tile">
       <slot name="icon">
-        <img
-          :src="resolvedIcon"
-          alt="Navigation Icon"
-          class="w-20 h-20"
-          @error="handleImageError"
-        />
+        <img :src="resolvedIcon" alt="" class="w-20 h-20" @error="handleImageError" />
       </slot>
 
       <div v-if="resolvedAdditionalIcons.length" class="flex gap-2">
@@ -40,27 +20,43 @@
           v-for="(icon, index) in resolvedAdditionalIcons"
           :key="index"
           :src="icon"
-          alt="Additional Icon"
+          alt=""
           class="w-20 h-20"
           @error="handleImageError"
         />
       </div>
     </div>
 
-    <!-- Plus Button -->
+    <div class="nav-card-text text-h3">
+      {{ text }}
+    </div>
+
     <button
       v-if="addable"
-      class="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+      class="btn-secondary mt-2"
+      type="button"
       @click.stop="handleAdd"
     >
       +
     </button>
-
-    <div class="mb-4"></div>
-  </div>
+  </component>
 </template>
 
 <script lang="ts">
+import fallbackIcon from '../assets/icons/undefined.png'
+
+const CATEGORIES = [
+  'people',
+  'verb',
+  'descr',
+  'noun',
+  'social',
+  'quest',
+  'neg',
+  'other',
+] as const
+type Category = (typeof CATEGORIES)[number]
+
 export default {
   name: 'NavigationCard',
   props: {
@@ -76,25 +72,24 @@ export default {
       type: String,
       required: false,
     },
+    /** Fitzgerald-key category driving the card's tint/edge colors. */
     color: {
       type: String,
       required: false,
-      default: '#ffffff',
+      default: 'other',
     },
     cardWidth: {
       type: String,
       required: false,
-      default: '17rem',
     },
     cardHeight: {
       type: String,
       required: false,
-      default: '20rem',
+      default: '15rem',
     },
     borderRadius: {
       type: String,
       required: false,
-      default: '3rem',
     },
     additionalIcons: {
       type: Array,
@@ -117,6 +112,11 @@ export default {
     },
   },
   computed: {
+    category(): Category {
+      return (CATEGORIES as readonly string[]).includes(this.color)
+        ? (this.color as Category)
+        : 'other'
+    },
     resolvedIcon() {
       // If the icon is a full URL, use it directly; otherwise, resolve local asset
       return this.icon.startsWith('http')
@@ -139,14 +139,9 @@ export default {
     },
   },
   methods: {
-    navigate() {
-      if (this.route) {
-        this.$router.push(this.route)
-      }
-    },
     handleImageError(event: Event) {
       console.warn('Image failed to load:', (event.target as HTMLImageElement).src)
-      ;(event.target as HTMLImageElement).src = 'https://via.placeholder.com/300' // Fallback image
+      ;(event.target as HTMLImageElement).src = fallbackIcon
     },
     handleAdd() {
       this.$emit('add', this.id) // Ora passa l'ID corretto
@@ -156,12 +151,28 @@ export default {
 </script>
 
 <style scoped>
-.hover\:scale-102:hover {
-  transform: scale(1.02);
+.nav-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  text-decoration: none;
+  width: 100%;
 }
 
-/* Miglioriamo l'effetto hover per accessibilità */
-.flex.flex-col:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+.nav-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+}
+
+.nav-card-text {
+  color: var(--ink);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
 }
 </style>

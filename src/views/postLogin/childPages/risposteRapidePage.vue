@@ -1,26 +1,13 @@
 <template>
-  <!-- Background with modern gradient -->
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+  <div class="min-h-screen bg-canvas">
     <BackHome />
 
     <!-- Main content container -->
     <div class="container mx-auto px-6 pt-24 pb-16">
       <!-- Header section -->
       <div class="text-center mb-12">
-        <div
-          class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-3xl mb-6 shadow-lg"
-        >
-          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-            ></path>
-          </svg>
-        </div>
-        <h1 class="text-4xl font-bold text-slate-800 mb-4">{{ t('quickResponsesPage.title') }}</h1>
-        <p class="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+        <h1 class="text-display font-bold text-ink mb-4">{{ t('quickResponsesPage.title') }}</h1>
+        <p class="text-body-lg text-ink-soft max-w-2xl mx-auto">
           {{ t('quickResponsesPage.subtitle') }}
         </p>
       </div>
@@ -28,179 +15,58 @@
       <!-- Saved phrases content -->
       <div class="max-w-4xl mx-auto">
         <!-- Frasi salvate -->
-        <div v-if="savedPhrases.length > 0" class="space-y-6">
-          <div
-            v-for="phrase in savedPhrases"
-            :key="phrase.name"
-            class="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 p-6"
-          >
-            <!-- Phrase title -->
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-xl font-semibold text-slate-800 flex items-center gap-3">
-                <div
-                  class="w-8 h-8 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-lg flex items-center justify-center"
-                >
-                  <svg
-                    class="w-4 h-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                    ></path>
-                  </svg>
-                </div>
-                {{ phrase.name }}
-              </h3>
+        <div v-if="savedPhrases.length > 0" class="phrase-list">
+          <div v-for="phrase in savedPhrases" :key="phrase.name" class="surface-card">
+            <!-- Phrase title + primary actions -->
+            <div class="phrase-header">
+              <h3 class="text-h3 font-bold text-ink">{{ phrase.name }}</h3>
 
-              <!-- Action buttons -->
-              <div class="flex items-center gap-3">
-                <button
-                  @click="usePhrase(phrase)"
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-xl font-medium transition-colors duration-200 border border-green-200"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                  {{ t('quickResponsesPage.usePhrase') }}
-                </button>
-                <button
-                  @click="speakPhrase(phrase)"
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-xl font-medium transition-colors duration-200 border border-blue-200"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M8.586 7.757A3 3 0 106.636 10.1L3 21l4.475-1.635a3 3 0 002.475-.818L20.537 8.283a3 3 0 00.002-4.244 3.001 3.001 0 00-4.244.002l-8.757 8.757z"
-                    ></path>
-                  </svg>
+              <div class="phrase-actions">
+                <button type="button" class="btn-primary" @click="speakPhrase(phrase)">
                   {{ t('quickResponsesPage.speak') }}
                 </button>
-                <button
-                  @click="promptRename(phrase.name)"
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl font-medium transition-colors duration-200 border border-amber-200"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                    ></path>
-                  </svg>
-                  {{ t('quickResponsesPage.edit') }}
+                <button type="button" class="btn-secondary" @click="usePhrase(phrase)">
+                  {{ t('quickResponsesPage.usePhrase') }}
                 </button>
-                <button
-                  @click="removePhrase(phrase.name)"
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-xl font-medium transition-colors duration-200 border border-red-200"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    ></path>
-                  </svg>
-                  {{ t('quickResponsesPage.delete') }}
-                </button>
+                <details class="phrase-more">
+                  <summary class="btn-secondary">{{ t('quickResponsesPage.more') }}</summary>
+                  <div class="phrase-more-menu">
+                    <button type="button" class="btn-secondary" @click="promptRename(phrase.name)">
+                      {{ t('quickResponsesPage.edit') }}
+                    </button>
+                    <button type="button" class="btn-danger" @click="removePhrase(phrase.name)">
+                      {{ t('quickResponsesPage.delete') }}
+                    </button>
+                  </div>
+                </details>
               </div>
             </div>
 
             <!-- Pictograms display -->
-            <div class="bg-slate-50/50 rounded-xl p-4 border border-slate-100">
-              <h4 class="text-sm font-medium text-slate-600 mb-3">Pittogrammi nella frase:</h4>
-              <div class="flex flex-wrap gap-3">
-                <div
-                  v-for="id in phrase.pictogramIds"
-                  :key="id"
-                  class="w-16 h-16 bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm"
-                >
-                  <img
-                    :src="`https://static.arasaac.org/pictograms/${id}/${id}_300.png`"
-                    :alt="`Pittogramma ${id}`"
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
+            <div class="phrase-pictograms">
+              <div v-for="id in phrase.pictogramIds" :key="id" class="pictogram-tile phrase-pictogram">
+                <img
+                  :src="`https://static.arasaac.org/pictograms/${id}/${id}_300.png`"
+                  :alt="`Pittogramma ${id}`"
+                  class="phrase-pictogram-img"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>
         </div>
 
         <!-- Empty state -->
-        <div v-else class="text-center py-16">
-          <div
-            class="w-24 h-24 bg-slate-100 rounded-3xl flex items-center justify-center mx-auto mb-6"
-          >
-            <svg
-              class="w-12 h-12 text-slate-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-slate-700 mb-2">
+        <div v-else class="surface-card text-center empty-state">
+          <h3 class="text-h3 font-bold text-ink mb-2">
             {{ t('quickResponsesPage.noSavedPhrasesTitle') }}
           </h3>
-          <p class="text-slate-500 mb-8">{{ t('quickResponsesPage.noSavedPhrases') }}</p>
+          <p class="text-ink-soft mb-8">{{ t('quickResponsesPage.noSavedPhrases') }}</p>
 
           <!-- CTA to create phrases -->
-          <router-link
-            to="/dictionary"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-blue-700 transition-all duration-200 shadow-lg"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4v16m8-8H4"
-              ></path>
-            </svg>
+          <router-link to="/dictionary" class="btn-primary">
             {{ t('quickResponsesPage.createFirstPhrase') }}
           </router-link>
-        </div>
-
-        <!-- Educational note -->
-        <div class="mt-16">
-          <div
-            class="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200 p-6 text-center shadow-lg"
-          >
-            <div
-              class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-500 rounded-xl mb-4"
-            >
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-            </div>
-            <p class="text-slate-700 font-medium">
-              {{ t('quickResponsesPage.educationalNote') }}
-            </p>
-          </div>
         </div>
       </div>
     </div>
@@ -290,3 +156,81 @@ const promptRename = (oldName: string) => {
   }
 }
 </script>
+
+<style scoped>
+.phrase-list {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.phrase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.phrase-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.phrase-more {
+  position: relative;
+}
+
+.phrase-more summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.phrase-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.phrase-more-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-2));
+  display: grid;
+  gap: var(--space-2);
+  background: var(--surface);
+  border: var(--border-w) solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  z-index: 10;
+  min-width: 10rem;
+}
+
+.phrase-pictograms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.phrase-pictogram {
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phrase-pictogram-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.empty-state {
+  padding: var(--space-12) var(--space-6);
+}
+</style>

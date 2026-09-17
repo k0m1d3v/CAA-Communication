@@ -1,28 +1,21 @@
 <template>
-  <div class="flex flex-col items-center gap-2 relative">
-    <NavigationCard
-      :icon="icon"
-      :text="text"
-      class="h-40"
-      :card-height="'120px'"
-      :card-width="'160px'"
-      :border-radius="'20px'"
-      :show-divider="false"
-      :addable="false"
-    />
-    <button
-      class="absolute top-0 right-0 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full text-sm font-bold hover:bg-red-600"
-      @click="removePictogram"
-      aria-label="Remove pictogram"
-    >
-      ×
+  <div class="selected-pictogram">
+    <div class="pictogram-tile selected-pictogram-tile">
+      <img :src="icon" alt="" class="selected-pictogram-img" @error="onImgError" />
+      <span class="selected-pictogram-label">{{ text }}</span>
+    </div>
+    <button type="button" class="btn-danger selected-pictogram-remove" @click="removePictogram">
+      {{ t('common.removePictogram') }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import NavigationCard from './navigationCard.vue'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import fallbackIcon from '../assets/icons/undefined.png'
+
+const { t } = useI18n()
 
 // Define the Pictogram interface
 interface Pictogram {
@@ -43,7 +36,7 @@ const emit = defineEmits(['remove'])
 // Computed properties
 const icon = computed(() => {
   if (!props.id) {
-    return 'https://dummyimage.com/300x300/cccccc/000000&text=No+Image'
+    return fallbackIcon
   }
   return `https://static.arasaac.org/pictograms/${props.id}/${props.id}_300.png`
 })
@@ -56,8 +49,51 @@ const text = computed(() => {
   return pictogram?.keywords[0]?.keyword || ''
 })
 
+const onImgError = (event: Event) => {
+  ;(event.target as HTMLImageElement).src = fallbackIcon
+}
+
 const removePictogram = () => {
-  console.log('Emitting remove event with id:', props.id) // Debug log
   emit('remove', props.id)
 }
 </script>
+
+<style scoped>
+.selected-pictogram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 104px;
+}
+
+.selected-pictogram-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  width: 100%;
+}
+
+.selected-pictogram-img {
+  width: 84px;
+  height: 74px;
+  object-fit: contain;
+}
+
+.selected-pictogram-label {
+  font-size: var(--text-label);
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+}
+
+.selected-pictogram-remove {
+  width: 100%;
+  min-height: var(--target-min);
+  padding: 0 var(--space-2);
+  font-size: var(--text-label);
+}
+</style>

@@ -52,14 +52,16 @@ export const useAccessibilityStore = defineStore('accessibility', () => {
   const applySettings = () => {
     const root = document.documentElement
 
-    // Font size
+    // Font size — a multiplier applied to the root em (see tokens.css:
+    // html { font-size: calc(16px * var(--ui-scale)) }), so headings scale
+    // proportionally too, not just body text.
     const fontSizeMap = {
-      small: '14px',
-      medium: '16px',
-      large: '18px',
-      'extra-large': '22px',
+      small: '0.875',
+      medium: '1',
+      large: '1.125',
+      'extra-large': '1.375',
     }
-    root.style.setProperty('--base-font-size', fontSizeMap[settings.value.fontSize])
+    root.style.setProperty('--ui-scale', fontSizeMap[settings.value.fontSize])
 
     // High contrast
     if (settings.value.highContrast) {

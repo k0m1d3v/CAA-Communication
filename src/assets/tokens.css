@@ -1,0 +1,130 @@
+/* Atkinson Hyperlegible (UI) and Bricolage Grotesque (display) are loaded
+   from Google Fonts via <link> tags in index.html, not @font-face here —
+   keeps this file free of binary font data and lets the browser handle
+   preconnect/caching. */
+
+:root {
+  /* scala tipografica: un solo moltiplicatore, tutto in rem */
+  --ui-scale: 1;                 /* small .875 · medium 1 · large 1.125 · extra-large 1.375 */
+
+  /* neutri */
+  --canvas: #F4F6F8;
+  --surface: #FFFFFF;
+  --surface-sunken: #E8ECF0;
+  --ink: #11161B;                /* 18:1 su surface */
+  --ink-soft: #3B4652;           /* 9.6:1 */
+  --border: #6B7683;             /* 4.6:1 */
+  --border-strong: #11161B;
+
+  /* azioni */
+  --action: #0A549B;             /* 7.6:1 · testo bianco sopra */
+  --action-hover: #083F76;
+  --action-press: #062F58;
+  --action-tint: #D9E8F7;
+  --success: #1C6B3C;  --success-tint: #D6F0DC;
+  --warning: #8A4B00;  --warning-tint: #FCE3CC;
+  --danger:  #A5231B;  --danger-tint:  #FADCDA;
+
+  /* categorie CAA (chiave di Fitzgerald) — tinta / bordo */
+  --cat-people: #FFF3BF;   --cat-people-edge: #8A6B00;
+  --cat-verb:   #D6F0DC;   --cat-verb-edge:   #1C6B3C;
+  --cat-descr:  #D9E8F7;   --cat-descr-edge:  #0A549B;
+  --cat-noun:   #FCE3CC;   --cat-noun-edge:   #8A4B00;
+  --cat-social: #FADCE4;   --cat-social-edge: #96305A;
+  --cat-quest:  #E5DDF5;   --cat-quest-edge:  #5B3D9E;
+  --cat-neg:    #FADCDA;   --cat-neg-edge:    #A5231B;
+  --cat-other:  #FFFFFF;   --cat-other-edge:  #6B7683;
+
+  /* invariante: il pittogramma vive sempre su bianco */
+  --pictogram-tile: #FFFFFF;
+  --pictogram-tile-edge: #6B7683;
+
+  /* focus a due toni: visibile su qualsiasi fondo */
+  --focus-ring: #11161B;
+  --focus-halo: #FFFFFF;
+
+  /* forma e ritmo */
+  --radius-sm: 8px;  --radius-md: 12px;  --radius-lg: 20px;
+  --border-w: 2px;
+  --target-min: 44px;  --target: 56px;  --target-lg: 72px;
+  --tile: 120px;
+  --space-1: 4px;  --space-2: 8px;  --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px;
+
+  /* motion: nell'app solo colore e opacità */
+  --motion-fast: 120ms;
+  --motion-marketing: 300ms;
+
+  --font-ui: "Atkinson Hyperlegible", Helvetica, Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", "Atkinson Hyperlegible", sans-serif;
+
+  --text-label: 1rem;
+  --text-body: 1.125rem;
+  --text-body-lg: 1.25rem;
+  --text-h3: 1.5rem;
+  --text-h2: 2rem;
+  --text-display: 2.75rem;
+}
+
+html { font-size: calc(16px * var(--ui-scale)); }
+
+/* tema scuro: stessi nomi, valori paralleli.
+   Attivazione: data-theme="dark" su <html> per la scelta esplicita
+   dell'utente; @media (prefers-color-scheme) sotto per il default che
+   segue il sistema quando l'utente non ha scelto esplicitamente il chiaro. */
+:root[data-theme="dark"] {
+  --canvas: #101418;
+  --surface: #1A2026;
+  --surface-sunken: #232B33;
+  --ink: #F2F5F7;                /* 14.9:1 su surface */
+  --ink-soft: #B9C3CD;           /* 9.1:1 */
+  --border: #77838F;             /* 4.2:1 */
+  --border-strong: #F2F5F7;
+  --action: #7FB4EE;             /* 7.5:1 — per testo/bordi */
+  --action-hover: #A6CBF5;
+  --action-press: #5E97D6;
+  --action-tint: #16304A;
+  --focus-ring: #FFD400;
+  --focus-halo: #101418;
+  /* le tinte categoria scendono di luminanza, l'inchiostro resta chiaro */
+  --cat-people: #3A3208;   --cat-people-edge: #E8CE5A;
+  --cat-verb:   #16301F;   --cat-verb-edge:   #79C593;
+  --cat-descr:  #142A3F;   --cat-descr-edge:  #7FB4EE;
+  --cat-noun:   #35220B;   --cat-noun-edge:   #E0A362;
+  --cat-social: #331521;   --cat-social-edge: #E38BAC;
+  --cat-quest:  #241C3B;   --cat-quest-edge:  #B49CE8;
+  --cat-neg:    #3A1512;   --cat-neg-edge:    #EF8A82;
+  --cat-other:  #1A2026;   --cat-other-edge:  #77838F;
+  /* invariante confermata anche qui */
+  --pictogram-tile: #FFFFFF;
+  --pictogram-tile-edge: #C9CDD4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+    --canvas: #101418;
+    --surface: #1A2026;
+    --surface-sunken: #232B33;
+    --ink: #F2F5F7;
+    --ink-soft: #B9C3CD;
+    --border: #77838F;
+    --border-strong: #F2F5F7;
+    --action: #7FB4EE;
+    --action-hover: #A6CBF5;
+    --action-press: #5E97D6;
+    --action-tint: #16304A;
+    --focus-ring: #FFD400;
+    --focus-halo: #101418;
+    --cat-people: #3A3208;   --cat-people-edge: #E8CE5A;
+    --cat-verb:   #16301F;   --cat-verb-edge:   #79C593;
+    --cat-descr:  #142A3F;   --cat-descr-edge:  #7FB4EE;
+    --cat-noun:   #35220B;   --cat-noun-edge:   #E0A362;
+    --cat-social: #331521;   --cat-social-edge: #E38BAC;
+    --cat-quest:  #241C3B;   --cat-quest-edge:  #B49CE8;
+    --cat-neg:    #3A1512;   --cat-neg-edge:    #EF8A82;
+    --cat-other:  #1A2026;   --cat-other-edge:  #77838F;
+    --pictogram-tile: #FFFFFF;
+    --pictogram-tile-edge: #C9CDD4;
+  }
+}

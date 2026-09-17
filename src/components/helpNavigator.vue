@@ -522,41 +522,32 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
-  color: white;
-  border: none;
+  width: var(--target-lg);
+  height: var(--target-lg);
+  background: var(--action);
+  color: #FFFFFF;
+  border: var(--border-w) solid var(--action);
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+  transition: background-color var(--motion-fast), border-color var(--motion-fast);
   position: relative;
   overflow: hidden;
 }
 
 .help-button:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(255, 107, 107, 0.5);
+  background: var(--action-hover);
+  border-color: var(--action-hover);
 }
 
 .help-button-open {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  background: var(--action-press);
+  border-color: var(--action-press);
 }
 
+/* Notification state uses color, not a distracting loop animation. */
 .help-button-pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+  border-color: var(--warning);
+  border-width: 3px;
 }
 
 .help-icon {

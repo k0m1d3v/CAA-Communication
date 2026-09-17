@@ -23,9 +23,9 @@ locales in sync when editing user-facing strings.
 
 - **Framework**: Vue 3 (`<script setup>`, Composition API) + TypeScript
 - **Build**: Vite 6
-- **Styling**: Tailwind CSS 4 (via `@tailwindcss/vite`) + hand-written CSS in
-  `src/assets/main.css` / `src/assets/accessibility.css` and scoped `<style>`
-  blocks per component
+- **Styling**: Tailwind CSS 4 (via `@tailwindcss/vite`) driven by a token
+  system — see "Design system" below — plus scoped `<style>` blocks per
+  component that consume those tokens (`var(--ink)`, `.btn-primary`, etc.)
 - **State**: Pinia (mix of setup-store and options-store syntax — see below)
 - **Routing**: vue-router 4, `createWebHistory`, with a centralized
   `router.beforeEach` auth guard (see Routing below)
@@ -63,12 +63,12 @@ SDK; don't hardcode credentials there.
 ### Firestore rules
 
 `firestore.rules` (root-scoped access: a user can only read/write their own
-`users/{uid}` doc, phrases subcollection, and their own `analytics` events)
-is versioned in the repo and referenced from `firebase.json`, but pushing
-code does **not** deploy it. Deploy manually after any rules change:
-`firebase deploy --only firestore:rules` (or paste the file into the
-Firebase console). If you change Firestore access patterns in a store,
-update `firestore.rules` to match and flag that it needs redeploying.
+`users/{uid}` doc and phrases subcollection) is versioned in the repo and
+referenced from `firebase.json`, but pushing code does **not** deploy it.
+Deploy manually after any rules change: `firebase deploy --only
+firestore:rules` (or paste the file into the Firebase console). If you
+change Firestore access patterns in a store, update `firestore.rules` to
+match and flag that it needs redeploying.
 
 ## Project structure
 
@@ -113,7 +113,7 @@ whether that flow still needs to work.
 ### State management (Pinia) — two coexisting styles
 
 - **Setup-store syntax** (`ref`/`computed`, returns an object):
-  `authStore.ts`, `analyticsStore.ts`, `backupStore.ts`
+  `authStore.ts`, `backupStore.ts`
 - **Options-store syntax** (`state`/`actions` object):
   `pictogramStore.ts`, `accessibilityStore.ts`
 
@@ -142,13 +142,62 @@ try/catch around the `backupStore` call is effectively a dead fallback —
 `backupStore.savePhraseToCloud` never rethrows — the real failure handling
 lives in `backupStore.ts` itself.
 
-### Analytics
+### No analytics
 
-`analyticsStore.ts` writes usage events (`pictogram_used`, `phrase_created`,
-`voice_activated`, `page_visited`) to a top-level Firestore `analytics`
-collection, keyed by `userId`. `generateProgressReport` queries and
-summarizes these client-side. This is a real, if simple, analytics pipeline
-— not a stub. `/analytics` requires auth (route guard).
+There is deliberately no usage-analytics/progress-tracking feature in this
+app — an `analyticsStore.ts` + `/analytics` "My progress" page existed
+briefly (Firestore-backed event tracking, a progress report UI) but was
+**removed entirely** at the owner's request (no interest in maintaining the
+Firestore composite index it needed, or the feature generally). If you're
+tempted to re-add usage tracking, don't assume it's wanted — ask first.
+`pictogramStore.ts`, `helpNavigator.vue`, `risposteRapidePage.vue`, and
+`router/index.ts` briefly had tracking calls wired in; those are gone too.
+
+### Design system
+
+The whole app was redesigned around a token system (light/dark/high-contrast
+variants, WCAG-contrast-checked) instead of ad hoc Tailwind gradients:
+
+- **`src/assets/tokens.css`** — the single source of truth: neutrals, action
+  colors, 8 CAA pictogram-category colors as tint/edge pairs keyed to the
+  **Fitzgerald key** convention (`--cat-people`, `--cat-verb`, `--cat-descr`,
+  `--cat-noun`, `--cat-social`, `--cat-quest`, `--cat-neg`, `--cat-other`,
+  each with an `-edge` border color), spacing scale (`--space-1`…`--space-12`),
+  touch targets (`--target-min` 44px / `--target` 56px / `--target-lg` 72px),
+  radii, a two-tone focus ring, and `--ui-scale` (the accessibility panel's
+  font-size multiplier — `html { font-size: calc(16px * var(--ui-scale)) }`,
+  so it scales headings too, not just body text). Dark mode values live
+  twice: once under `:root[data-theme="dark"]` (explicit choice — nothing
+  sets this yet, no UI toggle exists) and once under `@media
+  (prefers-color-scheme: dark)` (system default).
+- **`src/assets/main.css`** imports `tokens.css` then `accessibility.css`,
+  maps tokens into Tailwind's `@theme` (`--color-ink`, `--text-h2`, etc. →
+  `text-ink`, `text-h2` utility classes), and defines the shared component
+  classes every page should reuse: `.btn`/`.btn-primary`/`.btn-secondary`/
+  `.btn-danger`, `.surface-card`, `.cat-tile` (category-colored, driven by
+  `--tint`/`--edge` custom props), `.pictogram-tile` (always white — this is
+  an invariant, pictograms never invert even in high-contrast/dark mode), and
+  the single global `:focus-visible` rule.
+- **`src/assets/accessibility.css`** — the classes `accessibilityStore.ts`
+  toggles on `<html>` (`.high-contrast`, `.reduced-motion`,
+  `.color-blind-friendly`, `.simplified-ui`, `.eye-tracking-mode`) now
+  *redefine tokens* rather than doing blanket `* { ... } !important`
+  overrides, so every component built on tokens adapts automatically.
+- **`components/navigationCard.vue`**: its `color` prop is a **category key**
+  (`'people'|'verb'|'descr'|'noun'|'social'|'quest'|'neg'|'other'`), not a
+  hex string — every call site across the app was migrated. Root element is
+  a real `RouterLink` (or `button` with no `route`), not a `div @click`.
+- Emoji-as-icon (👋🎓📚💬 etc.) and decorative gradients/blur/`hover:scale-*`
+  were removed from post-login pages during this pass; they're still fine on
+  the pre-login/marketing pages (`LandingPage.vue`, `CreditsPage.vue`,
+  `LoginPage.vue`, `RegistrationPage.vue`) which were **intentionally left
+  alone** — those are the one place expressive styling still makes sense
+  (the audience there is people evaluating the tool, not the AAC user).
+  `main.css`'s old dead CSS (`button.login/.register/.loginCredits/
+  .registerCredits`, `.rainbow-bounce`, `#fcffa1` background) was removed too
+  since grep confirmed nothing referenced it — if you're about to restyle the
+  pre-login pages, check they don't secretly depend on those before assuming
+  they're gone for good.
 
 ## Conventions observed in this codebase
 
@@ -191,6 +240,16 @@ affect a communication tool used by vulnerable/dependent users:
    Firebase project.
 4. **No CI configured** — `npm run lint`/`type-check`/`test`/`build` all
    pass locally but nothing runs them automatically on push/PR.
+5. **Pre-login pages (`LandingPage`, `CreditsPage`, `LoginPage`,
+   `RegistrationPage`) were not redesigned** — deliberately deferred, see
+   "Design system" above. They still use the old ad hoc Tailwind styling.
+6. **No live browser verification of the redesign or the games** — all of
+   it passes lint/type-check/test/build, but no session so far has had
+   Chrome extension access to actually click through the app. Do a manual
+   pass (`npm run dev`) before trusting it in production, especially: high
+   contrast + dark mode pictogram legibility, `extra-large` font scaling at
+   320px width, keyboard-only navigation, and the games' speech-synthesis
+   flows (`imparaPage.vue`, `ascoltaTrovaPage.vue`).
 
 ## Working style for this repo
 

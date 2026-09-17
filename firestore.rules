@@ -19,17 +19,6 @@ service cloud.firestore {
       }
     }
 
-    // Usage analytics events: a user may create their own events and read
-    // events they own (used by analyticsStore's progress reports), but
-    // never edit or delete history after the fact.
-    match /analytics/{eventId} {
-      allow create: if request.auth != null
-        && request.auth.uid == request.resource.data.userId;
-      allow read: if request.auth != null
-        && request.auth.uid == resource.data.userId;
-      allow update, delete: if false;
-    }
-
     // Deny everything else by default.
     match /{document=**} {
       allow read, write: if false;

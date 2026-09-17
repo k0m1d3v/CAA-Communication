@@ -7,12 +7,12 @@ describe('accessibilityStore', () => {
     setActivePinia(createPinia())
     localStorage.clear()
     document.documentElement.className = ''
-    document.documentElement.style.removeProperty('--base-font-size')
+    document.documentElement.style.removeProperty('--ui-scale')
   })
 
   afterEach(() => {
     document.documentElement.className = ''
-    document.documentElement.style.removeProperty('--base-font-size')
+    document.documentElement.style.removeProperty('--ui-scale')
   })
 
   it('toggles the high-contrast class on the document root', () => {
@@ -32,14 +32,14 @@ describe('accessibilityStore', () => {
     expect(document.documentElement.classList.contains('reduced-motion')).toBe(true)
   })
 
-  it('sets the --base-font-size CSS variable per size', () => {
+  it('sets the --ui-scale CSS variable per size', () => {
     const store = useAccessibilityStore()
 
     store.setFontSize('extra-large')
-    expect(document.documentElement.style.getPropertyValue('--base-font-size')).toBe('22px')
+    expect(document.documentElement.style.getPropertyValue('--ui-scale')).toBe('1.375')
 
     store.setFontSize('small')
-    expect(document.documentElement.style.getPropertyValue('--base-font-size')).toBe('14px')
+    expect(document.documentElement.style.getPropertyValue('--ui-scale')).toBe('0.875')
   })
 
   it('resets all settings via the "reset" preset', () => {
